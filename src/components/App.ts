@@ -1,3 +1,6 @@
+import{Form}from './Form'
+import{Table}from './Table'
+
 export function renderApp(): void {
   const root = document.getElementById('app');
 
@@ -7,12 +10,16 @@ export function renderApp(): void {
 
   root.innerHTML = ''; // Clear existing DOM
 
-  const layout: HTMLDivElement = document.createElement('div');
-  layout.className = 'app';
+  const title = document.createElement('h1');
+  title.className = 'main-title';
+  title.textContent = 'Loan Application Form';
 
-  
+  const layout: HTMLDivElement = document.createElement('div');
+  layout.className = 'layout';
+
   layout.appendChild(Form());
   layout.appendChild(Table());
-
+  
+  root.appendChild(title);
   root.appendChild(layout);
 }
