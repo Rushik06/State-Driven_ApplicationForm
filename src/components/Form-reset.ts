@@ -1,38 +1,30 @@
-import type { AppState } from './types/app-state.type';
+import { state } from '../app.state';
 
-export const state: AppState = {
-  form: {
+export function resetFormState(): void {
+  state.form = {
     editId: null,
-
     fullName: '',
     dob: '',
     age: null,
     gender: null,
-
     email: '',
     mobile: '',
     pan: '',
     aadhaar: '',
-
     employmentType: null,
+    companyName: '',
     monthlyIncome: null,
     yearsInJob: null,
-    companyName: '',
-
     liabilities: null,
     loanAmount: null,
-    loanPurpose:null,
-    loanTenure: 12,
-
+    loanPurpose: null,
+    loanTenure: null,
     existingLoans: false,
     creditScore: null,
-
-    bankAccountType: 'SAVINGS',
+    bankAccountType: null,
     salarySlip: null,
     bankStatement: null,
-
     infoAccurate: false,
     termsAccepted: false
-  },
-  submissions: []
-};
+  };
+}

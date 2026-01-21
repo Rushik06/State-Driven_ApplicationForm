@@ -1,9 +1,9 @@
 import { state } from './app.state';
-import type { AppState, LoanApplication } from './types';
+import type { LoanApplication } from './types/loan-application.type';
 
 const STORAGE_KEY = 'loan_app_state';
 
-function stripFiles(app: LoanApplication): LoanApplication {
+function appFields(app: LoanApplication): LoanApplication {
   return {
     ...app,
     salarySlip: null,
@@ -12,9 +12,8 @@ function stripFiles(app: LoanApplication): LoanApplication {
 }
 
 export function saveToStorage(): void {
-  const serializableState: AppState = {
-    ...state,
-    submissions: state.submissions.map(stripFiles)
+  const serializableState = {
+    submissions: state.submissions.map(appFields)
   };
 
   localStorage.setItem(
@@ -28,17 +27,11 @@ export function loadFromStorage(): void {
   if (!raw) return;
 
   try {
-    const parsed = JSON.parse(raw) as AppState;
+    const parsed = JSON.parse(raw);
 
-    state.form = {
-      ...state.form,
-      ...parsed.form,
-      salarySlip: null,
-      bankStatement: null
-    };
-
-    state.submissions = parsed.submissions;
+    state.submissions = parsed.submissions ?? [];
+    
   } catch {
-
+    
   }
 }

@@ -1,5 +1,5 @@
-import type { LoanFormState } from './types/loan-form-state.type';
-import type { FormErrors } from './types/form-errors.type';
+import type { LoanFormState } from '../types/loan-form-state.type';
+import type { FormErrors } from '../types/form-errors.type';
 
 //regex validations
 const regex = {
@@ -27,8 +27,8 @@ function validatePositiveNumber(value: number | null): boolean {
   return value === true;
 }
 //age validation
-function calculateAge(dob: string): number | null {
-  if (!dob) return null;
+export function calculateAge(dob: string): number | null {
+ if (!dob) return null;
 
   const birthDate = new Date(dob);
   const today = new Date();
@@ -82,7 +82,6 @@ export function validateForm(form: LoanFormState): FormErrors {
   if (!regex.mobile.test(form.mobile)) {
     errors.mobile = 'Invalid mobile number';
   }
-
 
   if (!regex.pan.test(form.pan)) {
     errors.pan = 'Invalid PAN format';

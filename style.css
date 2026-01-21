@@ -94,11 +94,12 @@ select
     border-radius: 10px;
     font-size: 14px;
 }
-#age {
-  background: #e5e7eb;
+
+input[readonly] {
+  background-color: #f0f0f0;
+  color: #525050;
   cursor: not-allowed;
 }
-
 select{
     width: 55%;
 }
