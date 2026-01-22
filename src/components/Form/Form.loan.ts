@@ -1,16 +1,16 @@
-import { state } from '../app.state';
-import type { CreditScore } from '../types/credit-score.type';
+import { state } from '../../app.state';
+import type { CreditScore } from '../../types/credit-score.type';
 
-import { fieldset } from './helpers/createFieldset';
-import { label } from './helpers/createLable';
-import { input } from './helpers/createInput';
-import { select } from './helpers/createSelect';
-import { error } from './helpers/createError';
+import { fieldset } from '../helpers/createFieldset';
+import { label } from '../helpers/createLable';
+import { input } from '../helpers/createInput';
+import { select } from '../helpers/createSelect';
+import { error } from '../helpers/createError';
 
 export function renderLoanRequirements(form: HTMLFormElement) {
   const fs = fieldset('Loan Requirements', form);
 
-  /* ---------- Loan Amount ---------- */
+  //LOAN AMOUNT
   const loanAmount = input(
     'number',
     state.form.loanAmount !== null ? String(state.form.loanAmount) : ''
@@ -18,13 +18,11 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   const loanAmountErr = error();
   fs.append(label('Loan Amount Required *'), loanAmount, loanAmountErr);
 
-  loanAmount.oninput = () => {
-    state.form.loanAmount = loanAmount.value
-      ? Number(loanAmount.value)
-      : null;
-  };
+  loanAmount.addEventListener('input', () => {
+    state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
+  });
 
-  /* ---------- Loan Purpose ---------- */
+  //LOAN PURPOSE
   const loanPurpose = select(
     ['HOME', 'PERSONAL', 'EDUCATION'],
     state.form.loanPurpose
@@ -32,13 +30,11 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   const loanPurposeErr = error();
   fs.append(label('Loan Purpose *'), loanPurpose, loanPurposeErr);
 
-  loanPurpose.onchange = () => {
-    state.form.loanPurpose = loanPurpose.value
-      ? (loanPurpose.value as any)
-      : null;
-  };
+  loanPurpose.addEventListener('change', () => {
+    state.form.loanPurpose = loanPurpose.value as any;
+  });
 
-  /* ---------- Loan Tenure ---------- */
+  //LOAN TENURE
   const tenure = select(
     ['12', '24', '36', '48', '60'],
     state.form.loanTenure !== null
@@ -48,20 +44,18 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   const tenureErr = error();
   fs.append(label('Loan Tenure (Months)'), tenure, tenureErr);
 
-  tenure.onchange = () => {
-    state.form.loanTenure = tenure.value
-      ? Number(tenure.value)
-      : null;
-  };
+ tenure.addEventListener('change', () => {
+  state.form.loanTenure = tenure.value ? Number(tenure.value) : null;
+  });
 
-  /* ---------- Existing Loans ---------- */
+ //Exsisting Check
   const existingLabel = document.createElement('label');
   const existingChk = input('checkbox');
   existingChk.checked = state.form.existingLoans;
 
-  existingChk.onchange = () => {
+  existingChk.addEventListener('change', () => {
     state.form.existingLoans = existingChk.checked;
-  };
+  });
 
   existingLabel.append(
     existingChk,
@@ -69,7 +63,7 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   );
   fs.append(existingLabel);
 
-  /* ---------- Credit Score ---------- */
+  //Credit Score
   const creditScores: readonly CreditScore[] = [
     'Below 650',
     '650-750',
@@ -88,9 +82,9 @@ export function renderLoanRequirements(form: HTMLFormElement) {
     radio.name = 'creditScore';
     radio.checked = state.form.creditScore === score;
 
-    radio.onchange = () => {
+    radio.addEventListener('change', () => {
       state.form.creditScore = score;
-    };
+    });
 
     item.append(radio, document.createTextNode(` ${score}`));
     creditGroup.appendChild(item);
@@ -98,7 +92,6 @@ export function renderLoanRequirements(form: HTMLFormElement) {
 
   fs.append(label('Credit Score (Optional)'), creditGroup, creditErr);
 
-  /* ---------- return error map ---------- */
   return {
     loanAmount: loanAmountErr,
     loanPurpose: loanPurposeErr,

@@ -1,6 +1,6 @@
-import { state } from '../app.state';
-import { input } from './helpers/createInput';
-import { error } from './helpers/createError';
+import { state } from '../../app.state';
+import { input } from '../helpers/createInput';
+import { error } from '../helpers/createError';
 
 export function renderDeclarations(form: HTMLFormElement) {
   //Information Accurate
@@ -8,9 +8,9 @@ export function renderDeclarations(form: HTMLFormElement) {
   const infoChk = input('checkbox');
   infoChk.checked = state.form.infoAccurate;
 
-  infoChk.onchange = () => {
+   infoChk.addEventListener('change', () => {
     state.form.infoAccurate = infoChk.checked;
-  };
+  });
 
   infoLabel.append(
     infoChk,
@@ -25,9 +25,9 @@ export function renderDeclarations(form: HTMLFormElement) {
   const termsChk = input('checkbox');
   termsChk.checked = state.form.termsAccepted;
 
-  termsChk.onchange = () => {
+   termsChk.addEventListener('change', () => {
     state.form.termsAccepted = termsChk.checked;
-  };
+  });
 
   termsLabel.append(
     termsChk,

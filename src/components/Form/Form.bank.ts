@@ -1,11 +1,11 @@
-import { state } from '../app.state';
-import type { BankAccountType } from '../types/bank-account.type';
+import { state } from '../../app.state';
+import type { BankAccountType } from '../../types/bank-account.type';
 
-import { fieldset } from './helpers/createFieldset';
-import { label } from './helpers/createLable';
-import { input } from './helpers/createInput';
-import { select } from './helpers/createSelect';
-import { error } from './helpers/createError';
+import { fieldset } from '../helpers/createFieldset';
+import { label } from '../helpers/createLable';
+import { input } from '../helpers/createInput';
+import { select } from '../helpers/createSelect';
+import { error } from '../helpers/createError';
 
 export function renderBankingAndDocuments(form: HTMLFormElement) {
   const fs = fieldset('Banking & Documents', form);
@@ -30,9 +30,9 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
 
   fs.append(label('Upload Salary Slip *'), salarySlip, salaryErr);
 
-  salarySlip.onchange = () => {
+  salarySlip.addEventListener('change', () => {
     state.form.salarySlip = salarySlip.files?.[0] ?? null;
-  };
+  });
 
   //Upload Bank Statement
   const bankStmt = input('file');
@@ -41,9 +41,9 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
 
   fs.append(label('Upload Bank Statement *'), bankStmt, bankStmtErr);
 
-  bankStmt.onchange = () => {
+  bankStmt.addEventListener('change', () => {
     state.form.bankStatement = bankStmt.files?.[0] ?? null;
-  };
+  });
 
   return {
     bankAccountType: bankErr,

@@ -1,4 +1,4 @@
-import { state } from '../app.state';
+import { state } from '../../app.state';
 
 export function resetFormState(): void {
   state.form = {

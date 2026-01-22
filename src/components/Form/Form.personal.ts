@@ -1,43 +1,47 @@
-import { state } from '../app.state';
-import { renderApp } from './App';
-import { calculateAge } from './Validation';
-import type { Gender } from '../types/gender.type';
+import { state } from '../../app.state';
+import { renderApp } from '../App';
+import { calculateAge } from '../Validation';
+import type { Gender } from '../../types/gender.type';
 
-import { fieldset } from './helpers/createFieldset';
-import { label } from './helpers/createLable';
-import { input } from './helpers/createInput';
-import { error } from './helpers/createError';
+import { fieldset } from '../helpers/createFieldset';
+import { label } from '../helpers/createLable';
+import { input } from '../helpers/createInput';
+import { error } from '../helpers/createError';
 
 export function renderPersonalDetails(form: HTMLFormElement) {
   const fs = fieldset('Personal Details', form);
 
-  /* ---------- Full Name ---------- */
+  //Full-Name
+  
+  const fullNameLbl = label('Full Name *');
   const fullName = input('text', state.form.fullName);
   const fullNameErr = error();
-  fs.append(label('Full Name *'), fullName, fullNameErr);
-  fullName.oninput = () => {
+  fs.append(fullNameLbl, fullName, fullNameErr);
+  fullName.addEventListener('input', () => {
     state.form.fullName = fullName.value;
-  };
+  });
 
-  /* ---------- Date of Birth ---------- */
+  //Date-of-Birth
+  const dobLbl = label('Date of Birth*');
   const dob = input('date', state.form.dob);
   const dobErr = error();
-  fs.append(label('Date of Birth *'), dob, dobErr);
-  dob.onchange = () => {
+  fs.append(dobLbl, dob, dobErr);
+  dob.addEventListener('change', () => {
     state.form.dob = dob.value;
-    state.form.age = calculateAge(dob.value);
+    state.form.age=calculateAge(dob.value);
     renderApp();
-  };
+  });
 
-  /* ---------- Age (readonly) ---------- */
+  //AGE(readonly)
   const age = input(
     'number',
     state.form.age !== null ? String(state.form.age) : ''
   );
+  age.id = 'age';
   age.readOnly = true;
-  fs.append(label('Age'), age);
+  fs.append(label('age*'), age);;
 
-  /* ---------- Gender ---------- */
+  //Gender
   const genders: readonly Gender[] = ['MALE', 'FEMALE', 'OTHER'];
   const genderGroup = document.createElement('div');
   genderGroup.className = 'radio';
@@ -60,23 +64,22 @@ export function renderPersonalDetails(form: HTMLFormElement) {
 
   fs.append(label('Gender *'), genderGroup, genderErr);
 
-  /* ---------- Email Address ---------- */
+  //EMAIL
   const email = input('email', state.form.email);
   const emailErr = error();
   fs.append(label('Email Address *'), email, emailErr);
-  email.oninput = () => {
+  email.addEventListener('input', () => {
     state.form.email = email.value;
-  };
+  });
 
-  /* ---------- Mobile Number ---------- */
+  //Mobile number
   const mobile = input('tel', state.form.mobile);
   const mobileErr = error();
   fs.append(label('Mobile Number *'), mobile, mobileErr);
-  mobile.oninput = () => {
+  mobile.addEventListener('input', () => {
     state.form.mobile = mobile.value;
-  };
+  });
 
-  /* ---------- return error map ---------- */
   return {
     fullName: fullNameErr,
     dob: dobErr,

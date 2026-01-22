@@ -1,4 +1,4 @@
-import{Form}from './Form'
+import{Form}from './Form/Form'
 import{Table}from './Table'
 
 export function renderApp(): void {

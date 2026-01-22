@@ -8,7 +8,7 @@ import { attachSubmit } from './Form.submit';
 export function Form(): HTMLFormElement {
   const form = document.createElement('form');
 
-  /* ---------- Render Sections ---------- */
+  //state render sections
   const personal = renderPersonalDetails(form);
   const identity = renderIdentityDetails(form);
   const employment = renderEmployment(form);
@@ -16,7 +16,6 @@ export function Form(): HTMLFormElement {
   const bank = renderBankingAndDocuments(form);
   const declarations = renderDeclarations(form);
 
-  /* ---------- Wire Submit ---------- */
   attachSubmit(form, {
     ...personal,
     ...identity,
