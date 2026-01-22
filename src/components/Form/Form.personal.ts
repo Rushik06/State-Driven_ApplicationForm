@@ -1,6 +1,6 @@
 import { state } from '../../app.state';
 import { renderApp } from '../App';
-import { calculateAge } from '../Validation';
+import { calculateAge } from '../../app.logic';
 import type { Gender } from '../../types/gender.type';
 
 import { fieldset } from '../helpers/createFieldset';

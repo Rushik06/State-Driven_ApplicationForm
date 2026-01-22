@@ -27,8 +27,8 @@ function validatePositiveNumber(value: number | null): boolean {
   return value === true;
 }
 //age validation
-function calculateAge(dob: string): number | null {
-  if (!dob) return null;
+export function calculateAge(dob: string): number | null {
+ if (!dob) return null;
 
   const birthDate = new Date(dob);
   const today = new Date();
@@ -69,7 +69,6 @@ export function validateForm(form: LoanFormState): FormErrors {
     errors.dob = 'Age must be 18';
   }
 
-  
   if (!form.gender) {
     errors.gender = 'Gender is required';
   }
@@ -82,7 +81,6 @@ export function validateForm(form: LoanFormState): FormErrors {
   if (!regex.mobile.test(form.mobile)) {
     errors.mobile = 'Invalid mobile number';
   }
-
 
   if (!regex.pan.test(form.pan)) {
     errors.pan = 'Invalid PAN format';
@@ -104,7 +102,6 @@ export function validateForm(form: LoanFormState): FormErrors {
     errors.yearsInJob = 'Years in current job required';
   }
 
-
   if (!validateText(form.companyName)) {
     errors.companyName = 'Company name required';
   }
@@ -118,7 +115,6 @@ export function validateForm(form: LoanFormState): FormErrors {
     errors.loanAmount = 'Loan amount not eligible';
   }
 
-
   if (!validateSelect(form.loanPurpose)) {
     errors.loanPurpose = 'Loan purpose required';
 
@@ -131,7 +127,6 @@ export function validateForm(form: LoanFormState): FormErrors {
     errors.bankAccountType = 'Bank account type required';
   }
 
-
   if (!form.salarySlip) {
     errors.salarySlip = 'Salary slip required';
   }
@@ -139,7 +134,6 @@ export function validateForm(form: LoanFormState): FormErrors {
   if (!form.bankStatement) {
     errors.bankStatement = 'Bank statement required';
   }
-
 
   if (!validateCheckbox(form.infoAccurate)) {
     errors.infoAccurate = 'Please confirm information accuracy';

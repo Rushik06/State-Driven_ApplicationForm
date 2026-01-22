@@ -1,5 +1,5 @@
 import { state } from '../../app.state';
-import { validateForm } from '../Validation';
+import { validateForm } from '../../app.logic';
 import { generateId } from '../../utils/id';
 import { saveToStorage } from '../../app.storage';
 import { resetFormState } from './Form-reset';
