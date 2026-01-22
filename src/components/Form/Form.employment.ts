@@ -78,7 +78,6 @@ export function renderEmployment(form: HTMLFormElement) {
     state.form.liabilities = liabilities.value ? Number(liabilities.value) : null;
   });
   
-
   return {
     employmentType: empErr,
     companyName: companyErr,

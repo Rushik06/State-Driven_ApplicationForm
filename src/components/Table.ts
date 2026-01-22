@@ -138,7 +138,7 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
   deleteBtn.textContent = 'Delete';
 
   deleteBtn.addEventListener('click', () => {
-    const confirmed = window.confirm('Delete this application?');
+    const confirmed = window.confirm('Delete this row?');
     if (!confirmed) return;
 
     state.submissions = state.submissions.filter(

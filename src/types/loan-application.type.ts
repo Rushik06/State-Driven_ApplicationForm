@@ -11,26 +11,26 @@ export interface LoanApplication {
   dob: string;
   age: number;
 
-  gender: Gender;
+  gender: Gender|null;
   email: string;
   mobile: string;
   pan: string;
   aadhaar: string;
 
-  employmentType: EmploymentType;
-  monthlyIncome: number;
-  yearsInJob: number;
+  employmentType: EmploymentType|null;
+  monthlyIncome: number|null;
+  yearsInJob: number|null;
   companyName: string;
 
   liabilities: number | null;
-  loanAmount: number;
-  loanPurpose: LoanPurpose;
-  loanTenure: number;
+  loanAmount: number|null;
+  loanPurpose: LoanPurpose|null;
+  loanTenure: number|null;
 
   existingLoans: boolean;
   creditScore: CreditScore | null;
 
-  bankAccountType: BankAccountType;
+  bankAccountType: BankAccountType|null;
 
   salarySlip: File | null;
   bankStatement: File | null;
