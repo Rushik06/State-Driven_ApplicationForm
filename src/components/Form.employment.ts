@@ -10,7 +10,7 @@ import { error } from './helpers/createError';
 export function renderEmployment(form: HTMLFormElement) {
   const fs = fieldset('Employment & Income', form);
 
-  /* ---------- Employment Type ---------- */
+  //Employment Type
   const employmentTypes: readonly EmploymentType[] = [
     'SALARIED',
     'SELF_EMPLOYED'
@@ -26,7 +26,7 @@ export function renderEmployment(form: HTMLFormElement) {
       : null;
   };
 
-  /* ---------- Company Name ---------- */
+  //Company Name
   const company = input('text', state.form.companyName);
   const companyErr = error();
   fs.append(label('Company Name *'), company, companyErr);
@@ -35,7 +35,7 @@ export function renderEmployment(form: HTMLFormElement) {
     state.form.companyName = company.value;
   };
 
-  /* ---------- Monthly Income ---------- */
+//Monthly Income
   const income = input(
     'number',
     state.form.monthlyIncome !== null
@@ -51,7 +51,7 @@ export function renderEmployment(form: HTMLFormElement) {
       : null;
   };
 
-  /* ---------- Years in Current Job ---------- */
+  //Selecct
   const years = select(
     ['0–1 year', '1–3 years', '3+ years'],
     null
@@ -65,7 +65,7 @@ export function renderEmployment(form: HTMLFormElement) {
       : null;
   };
 
-  /* ---------- Current Monthly Liabilities (Optional) ---------- */
+  //Currently Liabilities
   const liabilities = input(
     'number',
     state.form.liabilities !== null
@@ -84,7 +84,6 @@ export function renderEmployment(form: HTMLFormElement) {
       : null;
   };
 
-  /* ---------- return error map ---------- */
   return {
     employmentType: empErr,
     companyName: companyErr,

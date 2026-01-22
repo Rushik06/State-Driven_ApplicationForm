@@ -3,7 +3,7 @@ import { input } from './helpers/createInput';
 import { error } from './helpers/createError';
 
 export function renderDeclarations(form: HTMLFormElement) {
-  /* ---------- Information Accurate ---------- */
+  //Information Accurate
   const infoLabel = document.createElement('label');
   const infoChk = input('checkbox');
   infoChk.checked = state.form.infoAccurate;
@@ -20,7 +20,7 @@ export function renderDeclarations(form: HTMLFormElement) {
   const infoErr = error();
   form.append(infoLabel, infoErr);
 
-  /* ---------- Terms & Conditions ---------- */
+  //Terms Check
   const termsLabel = document.createElement('label');
   const termsChk = input('checkbox');
   termsChk.checked = state.form.termsAccepted;
@@ -37,7 +37,7 @@ export function renderDeclarations(form: HTMLFormElement) {
   const termsErr = error();
   form.append(termsLabel, termsErr);
 
-  /* ---------- Submit / Update Button ---------- */
+  //Submit/Update Btn
   const btnWrap = document.createElement('div');
   btnWrap.className = 'submit-wrapper';
 
@@ -50,7 +50,6 @@ export function renderDeclarations(form: HTMLFormElement) {
   btnWrap.appendChild(btn);
   form.appendChild(btnWrap);
 
-  /* ---------- return error map ---------- */
   return {
     infoAccurate: infoErr,
     termsAccepted: termsErr

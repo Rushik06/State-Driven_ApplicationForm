@@ -10,7 +10,7 @@ import { error } from './helpers/createError';
 export function renderBankingAndDocuments(form: HTMLFormElement) {
   const fs = fieldset('Banking & Documents', form);
 
-  /* ---------- Bank Account Type ---------- */
+  //Bank-account Type
   const bankTypes: readonly BankAccountType[] = ['SAVINGS', 'CURRENT'];
   const bankType = select(bankTypes, state.form.bankAccountType);
   const bankErr = error();
@@ -23,7 +23,7 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
       : null;
   };
 
-  /* ---------- Upload Salary Slip ---------- */
+  //Upload Salary Slip
   const salarySlip = input('file');
   salarySlip.accept = '.pdf,.jpg,.png';
   const salaryErr = error();
@@ -34,7 +34,7 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
     state.form.salarySlip = salarySlip.files?.[0] ?? null;
   };
 
-  /* ---------- Upload Bank Statement ---------- */
+  //Upload Bank Statement
   const bankStmt = input('file');
   bankStmt.accept = '.pdf,.jpg,.png';
   const bankStmtErr = error();
@@ -45,7 +45,6 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
     state.form.bankStatement = bankStmt.files?.[0] ?? null;
   };
 
-  /* ---------- return error map ---------- */
   return {
     bankAccountType: bankErr,
     salarySlip: salaryErr,

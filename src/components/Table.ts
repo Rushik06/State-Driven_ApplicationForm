@@ -38,7 +38,10 @@ export function Table(): HTMLDivElement {
     'Bank Type',
     'Salary Slip',
     'Bank Statement',
+    'Infoaccurate',
+    'Terms',
     'Actions'
+    
   ];
 
   headers.forEach(text => {
@@ -99,7 +102,9 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
     app.creditScore ?? '-',
     app.bankAccountType,
     app.salarySlip ? app.salarySlip.name : '-',
-    app.bankStatement ? app.bankStatement.name : '-'
+    app.bankStatement ? app.bankStatement.name : '-',
+    app.infoAccurate?'Yes' : 'No',
+    app.termsAccepted?'Yes' : 'No'
   ];
 
   cells.forEach(value => {
@@ -140,10 +145,7 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
       a => a.id !== app.id
     );
 
-   /* localStorage.setItem(
-      'loan_applications',
-      JSON.stringify(state.submissions)
-    );*/
+ 
     saveToStorage();
     renderApp();
   });
