@@ -162,7 +162,32 @@ button:hover {
   justify-content: center;
   
 }
-
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 420px;
+  max-width: 90%;
+  background:#1e40af;
+  color: #fff;
+  padding: 32px 40px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  z-index: 99999;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+.toast.show {
+  opacity: 1;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 form > label {
     display: flex;
     margin-top: 10px;
@@ -292,4 +317,53 @@ form > label {
     .form-section,.table-section{
         width: 100%;
     }
+}
+
+.dark{
+  background:linear-gradient(135deg,#0b1220,#020617);
+  min-height:100vh
+}
+.dark .main-title{
+  color:#93c5fd
+}
+.dark form,.dark .table-wrapper,.dark fieldset{
+  background:#020617!important;
+  box-shadow:0 20px 40px rgba(0,0,0,.6)
+}
+.dark fieldset{
+  border-color:#1e293b
+}
+.dark legend{
+  background:#020617;
+  color:#93c5fd;
+  border-left-color:#3b82f6
+}
+.dark,.dark label,.dark td,.dark th{
+  color:#e5e7eb
+}
+.dark input,.dark select{
+  background:#020617;
+  color:#e5e7eb;
+  border-color:#334155
+}
+.dark input::placeholder{
+  color:#9ca3af}.dark input[readonly]
+  {
+    background:#020617;color:#9ca3af
+  }
+.dark thead th{
+  background:#1e3a8a
+}
+.dark tbody td{
+  background:#020617;
+  border-color:#1e293b
+}
+.dark button{
+  background:linear-gradient(135deg,#1e40af,#1e3a8a)
+}
+.dark .toast{
+  background:#1e40af
+}
+.dark input[type='date']::-webkit-calendar-picker-indicator{
+  filter:invert(1);
 }

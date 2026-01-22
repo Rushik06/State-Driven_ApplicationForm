@@ -6,6 +6,7 @@ import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { select } from '../helpers/createSelect';
 import { error } from '../helpers/createError';
+import { validateField } from '../../App-logic/field';
 
 export function renderEmployment(form: HTMLFormElement) {
   const fs = fieldset('Employment & Income', form);
@@ -21,18 +22,26 @@ export function renderEmployment(form: HTMLFormElement) {
   fs.append(label('Employment Type *'), empType, empErr);
 
   empType.addEventListener('change', () => {
-    if (employmentTypes.includes(empType.value as EmploymentType)) {
-      state.form.employmentType = empType.value as EmploymentType;
-    }
-  });
+  state.form.employmentType = empType.value as EmploymentType;
+  empErr.textContent = validateField(
+    'employmentType',
+    empType.value,
+    state.form
+  );
+ });
 
   //Company Name
   const company = input('text', state.form.companyName);
   const companyErr = error();
   fs.append(label('Company Name *'), company, companyErr);
 
-  company.addEventListener('input', () => {
-    state.form.companyName = company.value;
+ company.addEventListener('input', () => {
+  state.form.companyName = company.value.trim();
+  companyErr.textContent = validateField(
+    'companyName',
+    state.form.companyName,
+    state.form
+  );
   });
 
 //Monthly Income
@@ -45,8 +54,13 @@ export function renderEmployment(form: HTMLFormElement) {
   const incomeErr = error();
   fs.append(label('Monthly Income *'), income, incomeErr);
 
- income.addEventListener('input', () => {
-    state.form.monthlyIncome = income.value ? Number(income.value) : null;
+  income.addEventListener('input', () => {
+  state.form.monthlyIncome = income.value ? Number(income.value) : null;
+  incomeErr.textContent = validateField(
+    'monthlyIncome',
+    state.form.monthlyIncome,
+    state.form
+  );
   });
 
   //Selecct
@@ -58,9 +72,13 @@ export function renderEmployment(form: HTMLFormElement) {
   fs.append(label('Years in Current Job *'), years, yearsErr);
 
   years.addEventListener('change', () => {
-    state.form.yearsInJob = years.value ? years.selectedIndex + 1 : null;
+  state.form.yearsInJob = years.value ? years.selectedIndex + 1 : null;
+  yearsErr.textContent = validateField(
+    'yearsInJob',
+    state.form.yearsInJob,
+    state.form
+  );
   });
-
   //Currently Liabilities
   const liabilities = input(
     'number',

@@ -1,6 +1,9 @@
 import{Form}from './Form/Form'
 import{Table}from './Table'
+import { themeUtils } from '../utils/theme';
+import { ThemeToggle } from './ThemeToggle';
 
+const theme = themeUtils();
 export function renderApp(): void {
   const root = document.getElementById('app');
 
@@ -9,6 +12,8 @@ export function renderApp(): void {
   }
 
   root.innerHTML = ''; // Clear existing DOM
+  
+  theme.applyTheme(root)
 
   const title = document.createElement('h1');
   title.className = 'main-title';
@@ -20,6 +25,8 @@ export function renderApp(): void {
   layout.appendChild(Form());
   layout.appendChild(Table());
   
+
+  root.appendChild(ThemeToggle());
   root.appendChild(title);
   root.appendChild(layout);
 }

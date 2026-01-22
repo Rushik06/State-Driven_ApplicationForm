@@ -1,11 +1,11 @@
 import { state } from '../../app.state';
 import type { BankAccountType } from '../../types/bank-account.type';
-
 import { fieldset } from '../helpers/createFieldset';
 import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { select } from '../helpers/createSelect';
 import { error } from '../helpers/createError';
+import { validateField } from '../../App-logic/field';
 
 export function renderBankingAndDocuments(form: HTMLFormElement) {
   const fs = fieldset('Banking & Documents', form);
@@ -31,9 +31,13 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
   fs.append(label('Upload Salary Slip *'), salarySlip, salaryErr);
 
   salarySlip.addEventListener('change', () => {
-    state.form.salarySlip = salarySlip.files?.[0] ?? null;
+  state.form.salarySlip = salarySlip.files?.[0] ?? null;
+  salaryErr.textContent = validateField(
+    'salarySlip',
+    state.form.salarySlip,
+    state.form
+  );
   });
-
   //Upload Bank Statement
   const bankStmt = input('file');
   bankStmt.accept = '.pdf,.jpg,.png';
@@ -41,8 +45,13 @@ export function renderBankingAndDocuments(form: HTMLFormElement) {
 
   fs.append(label('Upload Bank Statement *'), bankStmt, bankStmtErr);
 
-  bankStmt.addEventListener('change', () => {
-    state.form.bankStatement = bankStmt.files?.[0] ?? null;
+   bankStmt.addEventListener('change', () => {
+   state.form.bankStatement = bankStmt.files?.[0] ?? null;
+   bankStmtErr.textContent = validateField(
+    'bankStatement',
+    state.form.bankStatement,
+    state.form
+  );
   });
 
   return {

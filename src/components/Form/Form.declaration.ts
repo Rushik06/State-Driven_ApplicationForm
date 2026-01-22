@@ -1,15 +1,20 @@
 import { state } from '../../app.state';
 import { input } from '../helpers/createInput';
 import { error } from '../helpers/createError';
+import { validateField } from '../../App-logic/field';
 
 export function renderDeclarations(form: HTMLFormElement) {
   //Information Accurate
   const infoLabel = document.createElement('label');
   const infoChk = input('checkbox');
   infoChk.checked = state.form.infoAccurate;
-
-   infoChk.addEventListener('change', () => {
-    state.form.infoAccurate = infoChk.checked;
+  infoChk.addEventListener('change', () => {
+  state.form.infoAccurate = infoChk.checked;
+  infoErr.textContent = validateField(
+    'infoAccurate',
+    infoChk.checked,
+    state.form
+  );
   });
 
   infoLabel.append(
@@ -26,7 +31,12 @@ export function renderDeclarations(form: HTMLFormElement) {
   termsChk.checked = state.form.termsAccepted;
 
    termsChk.addEventListener('change', () => {
-    state.form.termsAccepted = termsChk.checked;
+   state.form.termsAccepted = termsChk.checked;
+   termsErr.textContent = validateField(
+    'termsAccepted',
+    termsChk.checked,
+    state.form
+    );
   });
 
   termsLabel.append(

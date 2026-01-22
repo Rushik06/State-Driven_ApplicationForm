@@ -1,11 +1,11 @@
 import { state } from '../../app.state';
 import type { CreditScore } from '../../types/credit-score.type';
-
 import { fieldset } from '../helpers/createFieldset';
 import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { select } from '../helpers/createSelect';
 import { error } from '../helpers/createError';
+import { validateField } from '../../App-logic/field';
 
 export function renderLoanRequirements(form: HTMLFormElement) {
   const fs = fieldset('Loan Requirements', form);
@@ -19,7 +19,12 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   fs.append(label('Loan Amount Required *'), loanAmount, loanAmountErr);
 
   loanAmount.addEventListener('input', () => {
-    state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
+  state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
+  loanAmountErr.textContent = validateField(
+    'loanAmount',
+    state.form.loanAmount,
+    state.form
+  );
   });
 
   //LOAN PURPOSE
@@ -31,7 +36,15 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   fs.append(label('Loan Purpose *'), loanPurpose, loanPurposeErr);
 
   loanPurpose.addEventListener('change', () => {
-    state.form.loanPurpose = loanPurpose.value as any;
+  state.form.loanPurpose = loanPurpose.value
+    ? (loanPurpose.value as any)
+    : null;
+
+  loanPurposeErr.textContent = validateField(
+    'loanPurpose',
+    state.form.loanPurpose,
+    state.form
+  );
   });
 
   //LOAN TENURE

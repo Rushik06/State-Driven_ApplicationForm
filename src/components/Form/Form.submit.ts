@@ -1,9 +1,10 @@
 import { state } from '../../app.state';
-import { validateForm } from '../../app.logic';
+import { validateForm } from '../../App-logic/app.logic';
 import { generateId } from '../../utils/id';
 import { saveToStorage } from '../../app.storage';
 import { resetFormState } from './Form-reset';
 import { renderApp } from '../App';
+import { showToast } from '../../utils/toast';
 import type { FormErrors } from '../../types/form-errors.type';
 import type { LoanApplication } from '../../types/loan-application.type';
 
@@ -38,8 +39,10 @@ export function attachSubmit(
    if (state.form.editId) {
       const i = state.submissions.findIndex(a => a.id === state.form.editId);
       state.submissions[i] = application;
+      showToast('Updated Sucessfully');
     } else {
       state.submissions.push(application);
+      showToast('Submitted Successfully');
     }
 
     resetFormState();

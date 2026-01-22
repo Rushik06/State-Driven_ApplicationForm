@@ -35,4 +35,5 @@ export const state: AppState = {
     termsAccepted: false
   },
   submissions: []
+  
 };

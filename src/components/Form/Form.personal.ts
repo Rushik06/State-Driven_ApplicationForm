@@ -1,11 +1,12 @@
 import { state } from '../../app.state';
 import { renderApp } from '../App';
-import { calculateAge } from '../../app.logic';
+import { calculateAge } from '../../App-logic/age';
 import type { Gender } from '../../types/gender.type';
 import { fieldset } from '../helpers/createFieldset';
 import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { error } from '../helpers/createError';
+import { validateField } from '../../App-logic/field';
 
 export function renderPersonalDetails(form: HTMLFormElement) {
   const fs = fieldset('Personal Details', form);
@@ -17,8 +18,13 @@ export function renderPersonalDetails(form: HTMLFormElement) {
   const fullNameErr = error();
   fs.append(fullNameLbl, fullName, fullNameErr);
   fullName.addEventListener('input', () => {
-    state.form.fullName = fullName.value;
-  });
+  state.form.fullName = fullName.value;
+  fullNameErr.textContent = validateField(
+    'fullName',
+    fullName.value,
+    state.form
+  );
+});
 
   //Date-of-Birth
   const dobLbl = label('Date of Birth*');
@@ -26,9 +32,10 @@ export function renderPersonalDetails(form: HTMLFormElement) {
   const dobErr = error();
   fs.append(dobLbl, dob, dobErr);
   dob.addEventListener('change', () => {
-    state.form.dob = dob.value;
-    state.form.age=calculateAge(dob.value);
-    renderApp();
+  state.form.dob = dob.value;
+  state.form.age = calculateAge(dob.value);
+  dobErr.textContent = validateField('dob', dob.value, state.form);
+  renderApp();
   });
 
   //AGE(readonly)
@@ -53,10 +60,10 @@ export function renderPersonalDetails(form: HTMLFormElement) {
     const radio = input('radio');
     radio.name = 'gender';
     radio.checked = state.form.gender === g;
-    radio.onchange = () => {
-      state.form.gender = g;
-    };
-
+    radio.addEventListener('change', () => {
+    state.form.gender = g;
+    genderErr.textContent = validateField('gender', g, state.form);
+    });
     item.append(radio, document.createTextNode(` ${g}`));
     genderGroup.appendChild(item);
   });
@@ -67,16 +74,19 @@ export function renderPersonalDetails(form: HTMLFormElement) {
   const email = input('email', state.form.email);
   const emailErr = error();
   fs.append(label('Email Address *'), email, emailErr);
-  email.addEventListener('input', () => {
-    state.form.email = email.value;
+   email.addEventListener('input', () => {
+  state.form.email = email.value;
+  emailErr.textContent = validateField('email', email.value, state.form);
   });
 
   //Mobile number
   const mobile = input('tel', state.form.mobile);
   const mobileErr = error();
   fs.append(label('Mobile Number *'), mobile, mobileErr);
-  mobile.addEventListener('input', () => {
-    state.form.mobile = mobile.value;
+   mobile.addEventListener('input', () => {
+   mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+   state.form.mobile = mobile.value;
+   mobileErr.textContent = validateField('mobile', mobile.value, state.form);
   });
 
   return {
