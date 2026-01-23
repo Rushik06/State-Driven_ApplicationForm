@@ -8,6 +8,22 @@ import { showToast } from '../../utils/toast';
 import type { FormErrors } from '../../types/form-errors.type';
 import type { LoanApplication } from '../../types/loan-application.type';
 
+//Scroll To Error
+function scrollToFirstError(
+  errorMap: Partial<Record<keyof FormErrors, HTMLSpanElement>>
+):void{
+  const firstError=  Object.values(errorMap).find(
+    el=>el && el.textContent
+  );
+
+  if(firstError){
+    firstError.scrollIntoView({
+      behavior:'smooth',
+      block : 'center'
+    });
+  }
+}
+
 export function attachSubmit(
   form: HTMLFormElement,
   errorMap: Partial<Record<keyof FormErrors, HTMLSpanElement>>
@@ -26,7 +42,11 @@ export function attachSubmit(
       }
     });
 
-    if (Object.keys(errors).length > 0) return;
+    if (Object.keys(errors).length > 0){
+      scrollToFirstError(errorMap);
+      return;
+    } 
+
 
     //build application
     const application: LoanApplication = {

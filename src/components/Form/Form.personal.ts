@@ -1,5 +1,4 @@
 import { state } from '../../app.state';
-import { renderApp } from '../App';
 import { calculateAge } from '../../App-logic/age';
 import type { Gender } from '../../types/gender.type';
 import { fieldset } from '../helpers/createFieldset';
@@ -35,7 +34,6 @@ export function renderPersonalDetails(form: HTMLFormElement) {
   state.form.dob = dob.value;
   state.form.age = calculateAge(dob.value);
   dobErr.textContent = validateField('dob', dob.value, state.form);
-  renderApp();
   });
 
   //AGE(readonly)
