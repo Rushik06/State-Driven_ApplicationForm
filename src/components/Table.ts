@@ -139,7 +139,7 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
   deleteBtn.textContent = 'Delete';
 
   deleteBtn.addEventListener('click', () => {
-    const confirmed = window.confirm();
+    const confirmed = window.confirm('DELETE THE ROW');
     showToast('Deleted row successfully');
     if (!confirmed) return;
 
