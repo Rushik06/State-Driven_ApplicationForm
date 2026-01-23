@@ -1,6 +1,6 @@
 # Loan Application Form
 
-## About
+## Description
 
 This is a simple Loan Application Form project made using **Vanilla TypeScript** with **Vite**.  
 The project focuses on managing UI using a single application state instead of directly changing the DOM everywhere.
@@ -10,7 +10,7 @@ Once submitted, the data is saved in `localStorage`, so it doesn’t disappear a
 
 ---
 
-## What This App Does
+## Business Rules
 
 - Takes loan application details from the user
 - Shows submitted data in a table
@@ -27,8 +27,6 @@ Once submitted, the data is saved in `localStorage`, so it doesn’t disappear a
 - HTML
 - CSS
 - Browser LocalStorage
-
----
 
 ---
 
