@@ -87,7 +87,6 @@ input[type="date"],
 input[type="file"],
 select
  {
-    
     width: 55%;
     padding: 10px;
     border: 1px solid #194b87;
@@ -318,7 +317,6 @@ form > label {
         width: 100%;
     }
 }
-
 .dark{
   background:linear-gradient(135deg,#0b1220,#020617);
   min-height:100vh
