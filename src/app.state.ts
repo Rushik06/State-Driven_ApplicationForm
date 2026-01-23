@@ -4,7 +4,7 @@ export const state: AppState = {
   form: {
     editId: null,
 
-    fullName: '',
+    fullName: ''
     dob: '',
     age: null,
     gender: null,
