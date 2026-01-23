@@ -6,6 +6,7 @@ import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { error } from '../helpers/createError';
 import { validateField } from '../../App-logic/field';
+import { renderApp } from '../App';
 
 export function renderPersonalDetails(form: HTMLFormElement) {
   const fs = fieldset('Personal Details', form);
@@ -34,6 +35,7 @@ export function renderPersonalDetails(form: HTMLFormElement) {
   state.form.dob = dob.value;
   state.form.age = calculateAge(dob.value);
   dobErr.textContent = validateField('dob', dob.value, state.form);
+  renderApp()
   });
 
   //AGE(readonly)

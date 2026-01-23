@@ -5,10 +5,7 @@ const theme = themeUtils();
 
 export function ThemeToggle(): HTMLLabelElement {
   const label = document.createElement('label');
-  label.style.display = 'flex';
-  label.style.alignItems = 'center';
-  label.style.gap = '8px';
-  label.style.cursor = 'pointer';
+ 
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
