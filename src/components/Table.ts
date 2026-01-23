@@ -2,6 +2,7 @@ import { state } from '../app.state';
 import { renderApp } from './App';
 import { saveToStorage } from '../app.storage';
 import type { LoanApplication } from '../types/loan-application.type';
+import { showToast } from '../utils/toast';
 
 export function Table(): HTMLDivElement {
   const section = document.createElement('div');
@@ -138,7 +139,8 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
   deleteBtn.textContent = 'Delete';
 
   deleteBtn.addEventListener('click', () => {
-    const confirmed = window.confirm('Delete this row?');
+    const confirmed = window.confirm();
+    showToast('Deleted row successfully');
     if (!confirmed) return;
 
     state.submissions = state.submissions.filter(
