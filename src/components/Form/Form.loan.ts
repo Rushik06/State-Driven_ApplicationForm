@@ -6,6 +6,7 @@ import { input } from '../helpers/createInput';
 import { select } from '../helpers/createSelect';
 import { error } from '../helpers/createError';
 import { validateField } from '../../App-logic/field';
+import type { LoanPurpose } from '../../types/loan-purpose.type';
 
 export function renderLoanRequirements(form: HTMLFormElement) {
   const fs = fieldset('Loan Requirements', form);
@@ -19,49 +20,35 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   fs.append(label('Loan Amount Required *'), loanAmount, loanAmountErr);
 
   loanAmount.addEventListener('input', () => {
-  state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
-  loanAmountErr.textContent = validateField(
-    'loanAmount',
-    state.form.loanAmount,
-    state.form
-  );
+    state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
+    loanAmountErr.textContent = validateField('loanAmount', state.form.loanAmount, state.form);
   });
 
   //LOAN PURPOSE
-  const loanPurpose = select(
-    ['HOME', 'PERSONAL', 'EDUCATION'],
-    state.form.loanPurpose
-  );
+  const loanPurpose = select(['HOME', 'PERSONAL', 'EDUCATION'], state.form.loanPurpose);
   const loanPurposeErr = error();
   fs.append(label('Loan Purpose *'), loanPurpose, loanPurposeErr);
 
   loanPurpose.addEventListener('change', () => {
-  state.form.loanPurpose = loanPurpose.value
-    ? (loanPurpose.value as any)
-    : null;
+    const value = loanPurpose.value;
+    state.form.loanPurpose = loanPurpose.value ? (value as LoanPurpose) : null;
 
-  loanPurposeErr.textContent = validateField(
-    'loanPurpose',
-    state.form.loanPurpose,
-    state.form
-  );
+    loanPurposeErr.textContent = validateField('loanPurpose', state.form.loanPurpose, state.form);
   });
 
   //LOAN TENURE
   const tenure = select(
     ['12', '24', '36', '48', '60'],
-    state.form.loanTenure !== null
-      ? String(state.form.loanTenure)
-      : null
+    state.form.loanTenure !== null ? String(state.form.loanTenure) : null
   );
   const tenureErr = error();
   fs.append(label('Loan Tenure (Months)'), tenure, tenureErr);
 
- tenure.addEventListener('change', () => {
-  state.form.loanTenure = tenure.value ? Number(tenure.value) : null;
+  tenure.addEventListener('change', () => {
+    state.form.loanTenure = tenure.value ? Number(tenure.value) : null;
   });
 
- //Exsisting Check
+  //Exsisting Check
   const existingLabel = document.createElement('label');
   const existingChk = input('checkbox');
   existingChk.checked = state.form.existingLoans;
@@ -70,24 +57,17 @@ export function renderLoanRequirements(form: HTMLFormElement) {
     state.form.existingLoans = existingChk.checked;
   });
 
-  existingLabel.append(
-    existingChk,
-    document.createTextNode(' I have existing loans')
-  );
+  existingLabel.append(existingChk, document.createTextNode(' I have existing loans'));
   fs.append(existingLabel);
 
   //Credit Score
-  const creditScores: readonly CreditScore[] = [
-    'Below 650',
-    '650-750',
-    '750+'
-  ];
+  const creditScores: readonly CreditScore[] = ['Below 650', '650-750', '750+'];
 
   const creditGroup = document.createElement('div');
   creditGroup.className = 'radio';
   const creditErr = error();
 
-  creditScores.forEach(score => {
+  creditScores.forEach((score) => {
     const item = document.createElement('label');
     item.className = 'radio-item';
 
@@ -108,6 +88,6 @@ export function renderLoanRequirements(form: HTMLFormElement) {
   return {
     loanAmount: loanAmountErr,
     loanPurpose: loanPurposeErr,
-    loanTenure: tenureErr
+    loanTenure: tenureErr,
   };
 }

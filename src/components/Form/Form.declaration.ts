@@ -9,18 +9,11 @@ export function renderDeclarations(form: HTMLFormElement) {
   const infoChk = input('checkbox');
   infoChk.checked = state.form.infoAccurate;
   infoChk.addEventListener('change', () => {
-  state.form.infoAccurate = infoChk.checked;
-  infoErr.textContent = validateField(
-    'infoAccurate',
-    infoChk.checked,
-    state.form
-  );
+    state.form.infoAccurate = infoChk.checked;
+    infoErr.textContent = validateField('infoAccurate', infoChk.checked, state.form);
   });
 
-  infoLabel.append(
-    infoChk,
-    document.createTextNode(' Information provided is accurate *')
-  );
+  infoLabel.append(infoChk, document.createTextNode(' Information provided is accurate *'));
 
   const infoErr = error();
   form.append(infoLabel, infoErr);
@@ -30,19 +23,12 @@ export function renderDeclarations(form: HTMLFormElement) {
   const termsChk = input('checkbox');
   termsChk.checked = state.form.termsAccepted;
 
-   termsChk.addEventListener('change', () => {
-   state.form.termsAccepted = termsChk.checked;
-   termsErr.textContent = validateField(
-    'termsAccepted',
-    termsChk.checked,
-    state.form
-    );
+  termsChk.addEventListener('change', () => {
+    state.form.termsAccepted = termsChk.checked;
+    termsErr.textContent = validateField('termsAccepted', termsChk.checked, state.form);
   });
 
-  termsLabel.append(
-    termsChk,
-    document.createTextNode(' I accept terms & conditions *')
-  );
+  termsLabel.append(termsChk, document.createTextNode(' I accept terms & conditions *'));
 
   const termsErr = error();
   form.append(termsLabel, termsErr);
@@ -53,15 +39,13 @@ export function renderDeclarations(form: HTMLFormElement) {
 
   const btn = document.createElement('button');
   btn.type = 'submit';
-  btn.textContent = state.form.editId
-    ? 'Update'
-    : 'Submit Application';
+  btn.textContent = state.form.editId ? 'Update' : 'Submit Application';
 
   btnWrap.appendChild(btn);
   form.appendChild(btnWrap);
 
   return {
     infoAccurate: infoErr,
-    termsAccepted: termsErr
+    termsAccepted: termsErr,
   };
 }

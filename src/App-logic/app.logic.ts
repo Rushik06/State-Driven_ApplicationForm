@@ -25,10 +25,10 @@ export function validateForm(form: LoanFormState): FormErrors {
       'salarySlip',
       'bankStatement',
       'infoAccurate',
-      'termsAccepted'
+      'termsAccepted',
     ] as (keyof LoanFormState)[]
-  ).forEach(key => {
-    const msg = validateField(key, form[key], form);
+  ).forEach((key) => {
+    const msg = validateField(key, form[key] as unknown, form);
     if (msg) {
       errors[key] = msg;
     }

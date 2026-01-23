@@ -1,77 +1,68 @@
 import type { LoanFormState } from '../types/loan-form-state.type';
 import { regex } from './regex';
 import { calculateAge } from './age';
-
 export function validateField(
   key: keyof LoanFormState,
-  value: any,
+  value: unknown,
   form: LoanFormState
 ): string {
   switch (key) {
-    case 'fullName':
-      if (!value) return 'Full name is required';
-      if (!regex.text.test(value)) return 'Only alphabets allowed';
+    case 'fullName': {
+      if (typeof value !== 'string' || !value.trim()) {
+        return 'Full name is required';
+      }
+      if (!regex.text.test(value)) {
+        return 'Only alphabets allowed';
+      }
       return '';
-
-    case 'dob':
-      return calculateAge(value) ? '' : 'Age must be 18–65';
-
-    case 'gender':
-      return value ? '' : 'Gender is required';
-
-    case 'email':
+    }
+    case 'dob': {
+      if (typeof value !== 'string') return 'Age must be 18–65';
+      const age = calculateAge(value);
+      if (age === null || age < 18 || age > 65) {
+        return 'Age must be 18–65';
+      }
+      return '';
+    }
+    case 'email': {
+      if (typeof value !== 'string') return 'Invalid email';
       return regex.email.test(value) ? '' : 'Invalid email';
-
-    case 'mobile':
+    }
+    case 'mobile': {
+      if (typeof value !== 'string') return 'Invalid mobile number';
       return regex.mobile.test(value) ? '' : 'Invalid mobile number';
-
-    case 'pan':
+    }
+    case 'pan': {
+      if (typeof value !== 'string') return 'Invalid PAN format';
       return regex.pan.test(value) ? '' : 'Invalid PAN format';
-
-    case 'aadhaar':
+    }
+    case 'aadhaar': {
+      if (typeof value !== 'string') return 'Invalid Aadhaar number';
       return regex.aadhaar.test(value) ? '' : 'Invalid Aadhaar number';
-
-    case 'employmentType':
-      return value ? '' : 'Employment type required';
-
-    case 'companyName':
-      return value ? '' : 'Company name required';
-
+    }
     case 'monthlyIncome':
-      return value > 0 ? '' : 'Monthly income required';
-
     case 'yearsInJob':
-      return value > 0 ? '' : 'Years in job required';
-
-    case 'loanAmount':
-      if (!value || value <= 0) return 'Loan amount required';
-      if (form.monthlyIncome && value > form.monthlyIncome * 20) {
+    case 'loanAmount': {
+      if (typeof value !== 'number' || value <= 0) {
+        return 'Required';
+      }
+      if (
+        key === 'loanAmount' &&
+        typeof form.monthlyIncome === 'number' &&
+        value > form.monthlyIncome * 20
+      ) {
         return 'Loan amount not eligible';
       }
       return '';
-
-    case 'loanPurpose':
-      return value ? '' : 'Loan purpose required';
-
-    case 'loanTenure':
-      return value ? '' : 'Loan tenure required';
-
-    case 'bankAccountType':
-      return value ? '' : 'Bank account type required';
-
-    case 'salarySlip':
-      return value ? '' : 'Salary slip required';
-
-    case 'bankStatement':
-      return value ? '' : 'Bank statement required';
-
+    }
     case 'infoAccurate':
-      return value ? '' : 'Confirmation required';
-
-    case 'termsAccepted':
-      return value ? '' : 'Accept terms & conditions';
-
-    default:
+    case 'termsAccepted': {
+      if (typeof value !== 'boolean' || !value) {
+        return 'Required';
+      }
       return '';
+    }
+    default:
+      return value ? '' : 'Required';
   }
 }

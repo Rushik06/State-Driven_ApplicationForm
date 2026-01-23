@@ -4,7 +4,7 @@ export const state: AppState = {
   form: {
     editId: null,
 
-    fullName: ''
+    fullName: '',
     dob: '',
     age: null,
     gender: null,
@@ -21,7 +21,7 @@ export const state: AppState = {
 
     liabilities: null,
     loanAmount: null,
-    loanPurpose:null,
+    loanPurpose: null,
     loanTenure: 12,
 
     existingLoans: false,
@@ -32,8 +32,7 @@ export const state: AppState = {
     bankStatement: null,
 
     infoAccurate: false,
-    termsAccepted: false
+    termsAccepted: false,
   },
-  submissions: []
-  
+  submissions: [],
 };
