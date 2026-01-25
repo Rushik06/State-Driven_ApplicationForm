@@ -10,6 +10,7 @@ export function renderIdentityDetails(form: HTMLFormElement) {
 
   const pan = input('text', state.form.pan);
   const panErr = error();
+  pan.placeholder = 'ABCDE1234F';
   fs.append(label('PAN Number *'), pan, panErr);
   pan.addEventListener('input', () => {
     pan.value = pan.value.toUpperCase().slice(0, 10);
