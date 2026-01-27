@@ -1,1 +1,0 @@
-export type EmploymentType = 'SALARIED' | 'SELF_EMPLOYED' ;

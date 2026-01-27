@@ -1,1 +1,0 @@
-export type BankAccountType = 'SAVINGS' | 'CURRENT';
