@@ -1,6 +1,7 @@
 import type { AppState } from './types/app-state.type';
+import { Store } from './class';
 
-export const state: AppState = {
+const initialState: AppState = {
   form: {
     editId: null,
 
@@ -36,3 +37,5 @@ export const state: AppState = {
   },
   submissions: [],
 };
+
+export const appStore = new Store<AppState>(initialState);

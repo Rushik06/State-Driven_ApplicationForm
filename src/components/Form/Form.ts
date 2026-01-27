@@ -1,10 +1,10 @@
-import { renderPersonalDetails } from './Form.personal';
-import { renderIdentityDetails } from './Form.identity';
-import { renderEmployment } from './Form.employment';
-import { renderLoanRequirements } from './Form.loan';
-import { renderDeclarations } from './Form.declaration';
-import { renderBankingAndDocuments } from './Form.bank';
-import { attachSubmit } from './Form.submit';
+import { renderPersonalDetails } from './form-personal';
+import { renderIdentityDetails } from './form-identity';
+import { renderEmployment } from './form-employment';
+import { renderLoanRequirements } from './form-loan';
+import { renderDeclarations } from './form-declaration';
+import { renderBankingAndDocuments } from './form-bank';
+import { attachSubmit } from './form-submit';
 export function Form(): HTMLFormElement {
   const form = document.createElement('form');
 
@@ -22,7 +22,7 @@ export function Form(): HTMLFormElement {
     ...employment,
     ...loan,
     ...bank,
-    ...declarations
+    ...declarations,
   });
 
   return form;

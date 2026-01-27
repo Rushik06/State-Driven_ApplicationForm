@@ -1,66 +1,92 @@
-import { state } from '../../app.state';
+import { appStore } from '../../app.state';
 import type { CreditScore } from '../../types/credit-score.type';
+import type { LoanPurpose } from '../../types/loan-purpose.type';
+
 import { fieldset } from '../helpers/createFieldset';
 import { label } from '../helpers/createLable';
 import { input } from '../helpers/createInput';
 import { select } from '../helpers/createSelect';
 import { error } from '../helpers/createError';
 import { validateField } from '../../App-logic/field';
-import type { LoanPurpose } from '../../types/loan-purpose.type';
 
 export function renderLoanRequirements(form: HTMLFormElement) {
   const fs = fieldset('Loan Requirements', form);
+  const formState = appStore.get('form');
 
-  //LOAN AMOUNT
+  // Loan Amount
   const loanAmount = input(
     'number',
-    state.form.loanAmount !== null ? String(state.form.loanAmount) : ''
+    formState.loanAmount !== null ? String(formState.loanAmount) : ''
   );
   const loanAmountErr = error();
   fs.append(label('Loan Amount Required *'), loanAmount, loanAmountErr);
 
   loanAmount.addEventListener('input', () => {
-    state.form.loanAmount = loanAmount.value ? Number(loanAmount.value) : null;
-    loanAmountErr.textContent = validateField('loanAmount', state.form.loanAmount, state.form);
+    const value = loanAmount.value ? Number(loanAmount.value) : null;
+
+    const updatedForm = {
+      ...appStore.get('form'),
+      loanAmount: value,
+    };
+
+    appStore.set('form', updatedForm);
+    loanAmountErr.textContent = validateField('loanAmount', value, updatedForm);
   });
 
-  //LOAN PURPOSE
-  const loanPurpose = select(['HOME', 'PERSONAL', 'EDUCATION'], state.form.loanPurpose);
+  // Loan Purpose
+  const loanPurpose = select(['HOME', 'PERSONAL', 'EDUCATION'], formState.loanPurpose);
   const loanPurposeErr = error();
   fs.append(label('Loan Purpose *'), loanPurpose, loanPurposeErr);
 
   loanPurpose.addEventListener('change', () => {
-    const value = loanPurpose.value;
-    state.form.loanPurpose = loanPurpose.value ? (value as LoanPurpose) : null;
+    const value = loanPurpose.value ? (loanPurpose.value as LoanPurpose) : null;
 
-    loanPurposeErr.textContent = validateField('loanPurpose', state.form.loanPurpose, state.form);
+    const updatedForm = {
+      ...appStore.get('form'),
+      loanPurpose: value,
+    };
+
+    appStore.set('form', updatedForm);
+    loanPurposeErr.textContent = validateField('loanPurpose', value, updatedForm);
   });
 
-  //LOAN TENURE
+  // Loan Tenure
   const tenure = select(
     ['12', '24', '36', '48', '60'],
-    state.form.loanTenure !== null ? String(state.form.loanTenure) : null
+    formState.loanTenure !== null ? String(formState.loanTenure) : null
   );
   const tenureErr = error();
   fs.append(label('Loan Tenure (Months)'), tenure, tenureErr);
 
   tenure.addEventListener('change', () => {
-    state.form.loanTenure = tenure.value ? Number(tenure.value) : null;
+    const value = tenure.value ? Number(tenure.value) : null;
+
+    const updatedForm = {
+      ...appStore.get('form'),
+      loanTenure: value,
+    };
+
+    appStore.set('form', updatedForm);
   });
 
-  //Exsisting Check
+  // Existing Loans (checkbox)
   const existingLabel = document.createElement('label');
   const existingChk = input('checkbox');
-  existingChk.checked = state.form.existingLoans;
+  existingChk.checked = formState.existingLoans;
 
   existingChk.addEventListener('change', () => {
-    state.form.existingLoans = existingChk.checked;
+    const updatedForm = {
+      ...appStore.get('form'),
+      existingLoans: existingChk.checked,
+    };
+
+    appStore.set('form', updatedForm);
   });
 
   existingLabel.append(existingChk, document.createTextNode(' I have existing loans'));
   fs.append(existingLabel);
 
-  //Credit Score
+  // Credit Score
   const creditScores: readonly CreditScore[] = ['Below 650', '650-750', '750+'];
 
   const creditGroup = document.createElement('div');
@@ -73,10 +99,15 @@ export function renderLoanRequirements(form: HTMLFormElement) {
 
     const radio = input('radio');
     radio.name = 'creditScore';
-    radio.checked = state.form.creditScore === score;
+    radio.checked = appStore.get('form').creditScore === score;
 
     radio.addEventListener('change', () => {
-      state.form.creditScore = score;
+      const updatedForm = {
+        ...appStore.get('form'),
+        creditScore: score,
+      };
+
+      appStore.set('form', updatedForm);
     });
 
     item.append(radio, document.createTextNode(` ${score}`));

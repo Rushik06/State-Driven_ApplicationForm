@@ -1,5 +1,5 @@
-import { state } from '../app.state';
-import { renderApp } from './App';
+import { appStore } from '../app.state';
+import { renderApp } from './app';
 import { saveToStorage } from '../app.storage';
 import type { LoanApplication } from '../types/loan-application.type';
 import { showToast } from '../utils/toast';
@@ -13,7 +13,7 @@ export function Table(): HTMLDivElement {
 
   const table = document.createElement('table');
 
-  //thead 
+  // thead
   const thead = document.createElement('thead');
   const headRow = document.createElement('tr');
 
@@ -41,11 +41,10 @@ export function Table(): HTMLDivElement {
     'Bank Statement',
     'Infoaccurate',
     'Terms',
-    'Actions'
-    
+    'Actions',
   ];
 
-  headers.forEach(text => {
+  headers.forEach((text) => {
     const th = document.createElement('th');
     th.textContent = text;
     headRow.appendChild(th);
@@ -53,11 +52,12 @@ export function Table(): HTMLDivElement {
 
   thead.appendChild(headRow);
   table.appendChild(thead);
-//t-body
 
+  // tbody
   const tbody = document.createElement('tbody');
+  const submissions = appStore.get('submissions');
 
-  if (state.submissions.length === 0) {
+  if (submissions.length === 0) {
     const emptyRow = document.createElement('tr');
     const emptyCell = document.createElement('td');
     emptyCell.colSpan = headers.length;
@@ -65,10 +65,12 @@ export function Table(): HTMLDivElement {
     emptyRow.appendChild(emptyCell);
     tbody.appendChild(emptyRow);
   } else {
-    state.submissions.forEach(app => {
-      tbody.appendChild(renderRow(app));
+    //usage of DocumentFragment
+    const fragment = document.createDocumentFragment();
+    submissions.forEach((app) => {
+      fragment.appendChild(renderRow(app));
     });
-    
+    tbody.appendChild(fragment);
   }
 
   table.appendChild(tbody);
@@ -78,7 +80,7 @@ export function Table(): HTMLDivElement {
   return section;
 }
 
-//row render
+// row render
 function renderRow(app: LoanApplication): HTMLTableRowElement {
   const row = document.createElement('tr');
 
@@ -104,17 +106,17 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
     app.bankAccountType,
     app.salarySlip ? app.salarySlip.name : '-',
     app.bankStatement ? app.bankStatement.name : '-',
-    app.infoAccurate?'Yes' : 'No',
-    app.termsAccepted?'Yes' : 'No'
+    app.infoAccurate ? 'Yes' : 'No',
+    app.termsAccepted ? 'Yes' : 'No',
   ];
 
-  cells.forEach(value => {
+  cells.forEach((value) => {
     const td = document.createElement('td');
     td.textContent = String(value);
     row.appendChild(td);
   });
 
-  //Actions
+  // Actions
   const actionTd = document.createElement('td');
 
   const editBtn = document.createElement('button');
@@ -123,34 +125,35 @@ function renderRow(app: LoanApplication): HTMLTableRowElement {
   editBtn.textContent = 'Edit';
 
   editBtn.addEventListener('click', () => {
-    state.form = {
+    const updatedForm = {
       ...app,
       editId: app.id,
       salarySlip: null,
-      bankStatement: null
+      bankStatement: null,
     };
+
+    appStore.set('form', updatedForm);
     saveToStorage();
     renderApp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
- const deleteBtn = document.createElement('button');
+  const deleteBtn = document.createElement('button');
   deleteBtn.className = 'action-btn delete-btn';
   deleteBtn.textContent = 'Delete';
 
   deleteBtn.addEventListener('click', () => {
     const confirmed = window.confirm('DELETE THE ROW');
-    showToast('Deleted row successfully');
     if (!confirmed) return;
 
-    state.submissions = state.submissions.filter(
-      a => a.id !== app.id
-    );
+    const updated = appStore.get('submissions').filter((a) => a.id !== app.id);
 
- 
+    appStore.set('submissions', updated);
     saveToStorage();
+    showToast('Deleted row successfully');
     renderApp();
   });
+
   actionTd.append(editBtn, deleteBtn);
   row.appendChild(actionTd);
 

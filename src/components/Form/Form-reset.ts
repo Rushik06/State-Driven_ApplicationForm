@@ -1,7 +1,8 @@
-import { state } from '../../app.state';
+import { appStore } from '../../app.state';
+import type { LoanFormState } from '../../types/loan-form-state.type';
 
 export function resetFormState(): void {
-  state.form = {
+  const resetState: LoanFormState = {
     editId: null,
     fullName: '',
     dob: '',
@@ -25,6 +26,8 @@ export function resetFormState(): void {
     salarySlip: null,
     bankStatement: null,
     infoAccurate: false,
-    termsAccepted: false
+    termsAccepted: false,
   };
+
+  appStore.set('form', resetState);
 }

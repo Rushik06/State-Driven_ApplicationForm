@@ -1,5 +1,6 @@
-import { state } from './app.state';
+import { appStore } from './app.state';
 import type { LoanApplication } from './types/loan-application.type';
+import type { AppState } from './types/app-state.type';
 
 const STORAGE_KEY = 'loan_app_state';
 
@@ -7,19 +8,18 @@ function appFields(app: LoanApplication): LoanApplication {
   return {
     ...app,
     salarySlip: null,
-    bankStatement: null
+    bankStatement: null,
   };
 }
 
 export function saveToStorage(): void {
+  const submissions = appStore.get('submissions');
+
   const serializableState = {
-    submissions: state.submissions.map(appFields)
+    submissions: submissions.map(appFields),
   };
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(serializableState)
-  );
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(serializableState));
 }
 
 export function loadFromStorage(): void {
@@ -27,12 +27,8 @@ export function loadFromStorage(): void {
   if (!raw) return;
 
   try {
-    const parsed = JSON.parse(raw);
+    const parsed: Partial<AppState> = JSON.parse(raw);
 
-    state.submissions = parsed.submissions ?? [];
-    
-  } catch {
-    
-  }
+    appStore.set('submissions', parsed.submissions ?? []);
+  } catch {}
 }
-

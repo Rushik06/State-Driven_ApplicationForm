@@ -1,11 +1,10 @@
 import { themeUtils } from '../utils/theme';
-import { renderApp } from './App';
+import { renderApp } from './app';
 
 const theme = themeUtils();
 
 export function ThemeToggle(): HTMLLabelElement {
   const label = document.createElement('label');
- 
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
