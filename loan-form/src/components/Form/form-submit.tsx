@@ -1,26 +1,22 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { LoanApplication } from '../../types/loan-application.type';
-import { validateForm } from '../../App-logic/app.logic';
-import { generateId } from '../../utils/id';
-import { useToast } from '../../context/toast-context';
-import { useApp } from '../../context/app-context';
 import type { FormErrors } from '../../types/form-errors.type';
 
-type UseFormSubmitReturn = {
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  errors: FormErrors;
-};
+import { validateForm } from '../../App-logic/app.logic';
+import { generateId } from '../../utils/id';
+import { saveSubmissions } from '../../app.storage';
+import { useToast } from '../../context/toast-context';
+import { useApp } from '../../context/app-context';
 
-export function useFormSubmit(): UseFormSubmitReturn {
+export function useFormSubmit() {
   const { state, dispatch } = useApp();
   const { showToast } = useToast();
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    
 
     const validationErrors = validateForm(state.form);
     setErrors(validationErrors);
@@ -30,7 +26,6 @@ export function useFormSubmit(): UseFormSubmitReturn {
       scrollToFirstError();
       return;
     }
-
     const application: LoanApplication = {
       id: state.form.editId ?? generateId(),
       ...state.form,
@@ -43,13 +38,16 @@ export function useFormSubmit(): UseFormSubmitReturn {
     } else {
       dispatch({ type: 'ADD_SUBMISSION', payload: application });
       showToast('Submitted Successfully');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      dispatch({ type: 'RESET_FORM' });
+      setErrors({});
     }
 
-    window.scrollTo({top:0,behavior:'smooth'});
-
     dispatch({ type: 'RESET_FORM' });
+    saveSubmissions(state.submissions);
     setErrors({});
-  };
+  }
 
   return { handleSubmit, errors };
 }
@@ -57,6 +55,9 @@ export function useFormSubmit(): UseFormSubmitReturn {
 function scrollToFirstError(): void {
   const el = document.querySelector('.error-message');
   if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
   }
 }
