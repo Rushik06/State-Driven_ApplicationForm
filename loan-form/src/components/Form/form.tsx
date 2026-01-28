@@ -7,27 +7,27 @@ import { DeclarationForm } from './form-declaration';
 import { useFormSubmit } from './form-submit';
 
 export function Form() {
-  const { handleSubmit } = useFormSubmit();
+  const { handleSubmit,errors } = useFormSubmit();
 
   return (
     <form onSubmit={handleSubmit}>
       {/* Personal Details */}
-      <PersonalForm />
+      <PersonalForm submitErrors={errors}/>
 
       {/* Identity Details */}
-      <IdentityForm />
+      <IdentityForm submitErrors={errors} />
 
       {/* Employment & Income */}
-      <EmploymentForm />
+      <EmploymentForm submitErrors={errors} />
 
       {/* Loan Requirements */}
-      <LoanForm />
+      <LoanForm submitErrors={errors}/>
 
       {/* Banking & Documents */}
-      <BankForm />
+      <BankForm submitErrors={errors} />
 
       {/* Declarations + Submit */}
-      <DeclarationForm />
+      <DeclarationForm submitErrors={errors}/>
     </form>
   );
 }

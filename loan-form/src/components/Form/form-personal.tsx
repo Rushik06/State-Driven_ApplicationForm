@@ -1,14 +1,18 @@
+import { useState, useEffect } from 'react';
 import type { Gender } from '../../types/gender.type';
 import { calculateAge } from '../../App-logic/age';
 import { validateField } from '../../App-logic/field';
 import { useApp } from '../../context/app-context';
-import { useState } from 'react';
+import type { FormErrors } from '../../types/form-errors.type';
 
-export function PersonalForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function PersonalForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
-  //errors
   const [errors, setErrors] = useState({
     fullName: '',
     dob: '',
@@ -17,8 +21,16 @@ export function PersonalForm() {
     mobile: ''
   });
 
-  
-  // Handlers
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      fullName: submitErrors.fullName ?? prev.fullName,
+      dob: submitErrors.dob ?? prev.dob,
+      gender: submitErrors.gender ?? prev.gender,
+      email: submitErrors.email ?? prev.email,
+      mobile: submitErrors.mobile ?? prev.mobile
+    }));
+  }, [submitErrors]);
 
   function onFullNameChange(value: string) {
     dispatch({ type: 'UPDATE_FORM', payload: { fullName: value } });
@@ -54,19 +66,19 @@ export function PersonalForm() {
   }
 
   function onMobileChange(value: string) {
-    const excat = value.replace(/\D/g, '').slice(0, 10);
-    dispatch({ type: 'UPDATE_FORM', payload: { mobile: excat } });
+    const exact = value.replace(/\D/g, '').slice(0, 10);
+    dispatch({ type: 'UPDATE_FORM', payload: { mobile: exact } });
     setErrors(e => ({
       ...e,
-      mobile: validateField('mobile', excat, { ...form, mobile: excat })
+      mobile: validateField('mobile', exact, { ...form, mobile: exact })
     }));
   }
 
-  // UI
-
   const genders: readonly Gender[] = ['MALE', 'FEMALE', 'OTHER'];
 
-  return (
+  //UI
+
+ return (
     <fieldset>
       <legend>Personal Details</legend>
 

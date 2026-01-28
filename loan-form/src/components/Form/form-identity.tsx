@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
+import type { FormErrors } from '../../types/form-errors.type';
 
-export function IdentityForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function IdentityForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
-//errors
+
+  // typing-time errors
   const [errors, setErrors] = useState({
     pan: '',
     aadhaar: ''
   });
+
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      pan: submitErrors.pan ?? prev.pan,
+      aadhaar: submitErrors.aadhaar ?? prev.aadhaar
+    }));
+  }, [submitErrors]);
 
   // Handlers
 
@@ -46,7 +60,7 @@ export function IdentityForm() {
     }));
   }
 
-  //UI
+  // UI
 
   return (
     <FormSection title="Identity Details">
@@ -64,7 +78,7 @@ export function IdentityForm() {
       <label>Aadhaar Number *</label>
       <input
         type="tel"
-        placeholder='Must contain 12-digits'
+        placeholder="Must contain 12-digits"
         value={form.aadhaar}
         onChange={e => onAadhaarChange(e.target.value)}
       />

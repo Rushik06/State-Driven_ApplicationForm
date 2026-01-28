@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { LoanApplication } from '../../types/loan-application.type';
 import type { FormErrors } from '../../types/form-errors.type';
-
 import { validateForm } from '../../App-logic/app.logic';
 import { generateId } from '../../utils/id';
 import { saveSubmissions } from '../../app.storage';
@@ -35,6 +34,7 @@ export function useFormSubmit() {
     if (state.form.editId) {
       dispatch({ type: 'UPDATE_SUBMISSION', payload: application });
       showToast('Updated Successfully');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       dispatch({ type: 'ADD_SUBMISSION', payload: application });
       showToast('Submitted Successfully');

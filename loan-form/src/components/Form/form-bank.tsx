@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { BankAccountType } from '../../types/bank-account.type';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
+import type { FormErrors } from '../../types/form-errors.type';
 
-export function BankForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function BankForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
+  //typing-time errors
   const [errors, setErrors] = useState({
     bankAccountType: '',
     salarySlip: '',
@@ -17,7 +23,17 @@ export function BankForm() {
 
   const bankTypes: readonly BankAccountType[] = ['SAVINGS', 'CURRENT'];
 
-  // ---------- Handlers ----------
+
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      bankAccountType: submitErrors.bankAccountType ?? prev.bankAccountType,
+      salarySlip: submitErrors.salarySlip ?? prev.salarySlip,
+      bankStatement: submitErrors.bankStatement ?? prev.bankStatement
+    }));
+  }, [submitErrors]);
+
+  // Handlers 
 
   function onBankTypeChange(value: string) {
     const v = value ? (value as BankAccountType) : null;
@@ -69,7 +85,7 @@ export function BankForm() {
     }));
   }
 
-  // ---------- UI ----------
+  //  UI 
 
   return (
     <FormSection title="Banking & Documents">

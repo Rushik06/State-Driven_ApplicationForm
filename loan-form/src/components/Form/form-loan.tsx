@@ -1,26 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { CreditScore } from '../../types/credit-score.type';
 import type { LoanPurpose } from '../../types/loan-purpose.type';
+import type { FormErrors } from '../../types/form-errors.type';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 
-export function LoanForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function LoanForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
+  //typing-time errors
   const [errors, setErrors] = useState({
     loanAmount: '',
     loanPurpose: '',
     loanTenure: ''
   });
 
+
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      loanAmount: submitErrors.loanAmount ?? prev.loanAmount,
+      loanPurpose: submitErrors.loanPurpose ?? prev.loanPurpose,
+      loanTenure: submitErrors.loanTenure ?? prev.loanTenure
+    }));
+  }, [submitErrors]);
+
   const loanPurposes: readonly LoanPurpose[] = ['HOME', 'PERSONAL', 'EDUCATION'];
   const tenures = ['12', '24', '36', '48', '60'];
   const creditScores: readonly CreditScore[] = ['Below 650', '650-750', '750+'];
 
-  //Handlers
+  // Handlers
 
   function onLoanAmountChange(value: string) {
     const num = value ? Number(value) : null;
@@ -64,6 +80,13 @@ export function LoanForm() {
       payload: { loanTenure: num }
     });
 
+    setErrors(e => ({
+      ...e,
+      loanTenure: validateField('loanTenure', num, {
+        ...form,
+        loanTenure: num
+      })
+    }));
   }
 
   function onExistingLoansChange(checked: boolean) {
@@ -80,8 +103,7 @@ export function LoanForm() {
     });
   }
 
-  // ---------- UI ----------
-
+  //UI
   return (
     <FormSection title="Loan Requirements">
       {/* Loan Amount */}
@@ -109,7 +131,7 @@ export function LoanForm() {
       <ErrorMessage message={errors.loanPurpose} />
 
       {/* Loan Tenure */}
-      <label>Loan Tenure (Months)</label>
+      <label>Loan Tenure (Months) *</label>
       <select
         value={form.loanTenure !== null ? String(form.loanTenure) : ''}
         onChange={e => onTenureChange(e.target.value)}

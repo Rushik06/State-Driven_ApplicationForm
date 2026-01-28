@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
 import { ErrorMessage } from '../helpers/create-error';
+import type { FormErrors } from '../../types/form-errors.type';
 
-export function DeclarationForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function DeclarationForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
@@ -12,7 +17,15 @@ export function DeclarationForm() {
     termsAccepted: ''
   });
 
-  //Handlers
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      infoAccurate: submitErrors.infoAccurate ?? prev.infoAccurate,
+      termsAccepted: submitErrors.termsAccepted ?? prev.termsAccepted
+    }));
+  }, [submitErrors]);
+
+  // Handlers
 
   function onInfoAccurateChange(checked: boolean) {
     dispatch({
@@ -46,7 +59,7 @@ export function DeclarationForm() {
     }));
   }
 
-  // UI 
+  // UI
 
   return (
     <>

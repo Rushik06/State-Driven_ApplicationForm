@@ -1,20 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { EmploymentType } from '../../types/employment.type';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
+import type { FormErrors } from '../../types/form-errors.type';
 
-export function EmploymentForm() {
+type Props = {
+  submitErrors: FormErrors;
+};
+
+export function EmploymentForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
+  //  typing-time errors
   const [errors, setErrors] = useState({
     employmentType: '',
     companyName: '',
     monthlyIncome: '',
-    yearsInJob: ''
+    yearsInJob: '',
+    liabilities:''
   });
+
+  useEffect(() => {
+    setErrors(prev => ({
+      ...prev,
+      employmentType: submitErrors.employmentType ?? prev.employmentType,
+      companyName: submitErrors.companyName ?? prev.companyName,
+      monthlyIncome: submitErrors.monthlyIncome ?? prev.monthlyIncome,
+      yearsInJob: submitErrors.yearsInJob ?? prev.yearsInJob
+    }));
+  }, [submitErrors]);
 
   const employmentTypes: readonly EmploymentType[] = [
     'SALARIED',
@@ -75,7 +92,7 @@ export function EmploymentForm() {
   }
 
   function onYearsChange(index: number) {
-    const years = index > 0 ? index + 0 : null; 
+    const years = index > 0 ? index : null;
 
     dispatch({
       type: 'UPDATE_FORM',
@@ -98,6 +115,13 @@ export function EmploymentForm() {
       type: 'UPDATE_FORM',
       payload: { liabilities: num }
     });
+    setErrors(e => ({
+      ...e,
+      liabilities: validateField('liabilities', num, {
+        ...form,
+        liabilities:num
+      })
+    }));
   }
 
   // UI
@@ -157,6 +181,7 @@ export function EmploymentForm() {
         value={form.liabilities ?? ''}
         onChange={e => onLiabilitiesChange(e.target.value)}
       />
+      <ErrorMessage message={errors.liabilities}/>
     </FormSection>
   );
 }
