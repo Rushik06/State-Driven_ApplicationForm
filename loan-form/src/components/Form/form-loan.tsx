@@ -1,0 +1,153 @@
+import { useState } from 'react';
+import type { CreditScore } from '../../types/credit-score.type';
+import type { LoanPurpose } from '../../types/loan-purpose.type';
+import { useApp } from '../../context/app-context';
+import { validateField } from '../../App-logic/field';
+import { FormSection } from '../helpers/create-feildset';
+import { ErrorMessage } from '../helpers/create-error';
+
+export function LoanForm() {
+  const { state, dispatch } = useApp();
+  const form = state.form;
+
+  const [errors, setErrors] = useState({
+    loanAmount: '',
+    loanPurpose: '',
+    loanTenure: ''
+  });
+
+  const loanPurposes: readonly LoanPurpose[] = ['HOME', 'PERSONAL', 'EDUCATION'];
+  const tenures = ['12', '24', '36', '48', '60'];
+  const creditScores: readonly CreditScore[] = ['Below 650', '650-750', '750+'];
+
+  //Handlers
+
+  function onLoanAmountChange(value: string) {
+    const num = value ? Number(value) : null;
+
+    dispatch({
+      type: 'UPDATE_FORM',
+      payload: { loanAmount: num }
+    });
+
+    setErrors(e => ({
+      ...e,
+      loanAmount: validateField('loanAmount', num, {
+        ...form,
+        loanAmount: num
+      })
+    }));
+  }
+
+  function onLoanPurposeChange(value: string) {
+    const v = value ? (value as LoanPurpose) : null;
+
+    dispatch({
+      type: 'UPDATE_FORM',
+      payload: { loanPurpose: v }
+    });
+
+    setErrors(e => ({
+      ...e,
+      loanPurpose: validateField('loanPurpose', v, {
+        ...form,
+        loanPurpose: v
+      })
+    }));
+  }
+
+  function onTenureChange(value: string) {
+    const num = value ? Number(value) : null;
+
+    dispatch({
+      type: 'UPDATE_FORM',
+      payload: { loanTenure: num }
+    });
+
+  }
+
+  function onExistingLoansChange(checked: boolean) {
+    dispatch({
+      type: 'UPDATE_FORM',
+      payload: { existingLoans: checked }
+    });
+  }
+
+  function onCreditScoreChange(score: CreditScore) {
+    dispatch({
+      type: 'UPDATE_FORM',
+      payload: { creditScore: score }
+    });
+  }
+
+  // ---------- UI ----------
+
+  return (
+    <FormSection title="Loan Requirements">
+      {/* Loan Amount */}
+      <label>Loan Amount Required *</label>
+      <input
+        type="number"
+        value={form.loanAmount ?? ''}
+        onChange={e => onLoanAmountChange(e.target.value)}
+      />
+      <ErrorMessage message={errors.loanAmount} />
+
+      {/* Loan Purpose */}
+      <label>Loan Purpose *</label>
+      <select
+        value={form.loanPurpose ?? ''}
+        onChange={e => onLoanPurposeChange(e.target.value)}
+      >
+        <option value="">-- Select --</option>
+        {loanPurposes.map(p => (
+          <option key={p} value={p}>
+            {p}
+          </option>
+        ))}
+      </select>
+      <ErrorMessage message={errors.loanPurpose} />
+
+      {/* Loan Tenure */}
+      <label>Loan Tenure (Months)</label>
+      <select
+        value={form.loanTenure !== null ? String(form.loanTenure) : ''}
+        onChange={e => onTenureChange(e.target.value)}
+      >
+        <option value="">-- Select --</option>
+        {tenures.map(t => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+      <ErrorMessage message={errors.loanTenure} />
+
+      {/* Existing Loans */}
+      <label>
+        <input
+          type="checkbox"
+          checked={form.existingLoans}
+          onChange={e => onExistingLoansChange(e.target.checked)}
+        />
+        {' '}I have existing loans
+      </label>
+
+      {/* Credit Score */}
+      <label>Credit Score (Optional)</label>
+      <div className="radio">
+        {creditScores.map(score => (
+          <label key={score} className="radio-item">
+            <input
+              type="radio"
+              name="creditScore"
+              checked={form.creditScore === score}
+              onChange={() => onCreditScoreChange(score)}
+            />
+            {score}
+          </label>
+        ))}
+      </div>
+    </FormSection>
+  );
+}
