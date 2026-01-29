@@ -344,11 +344,12 @@ form > label {
   color:#93c5fd
 }
 .dark form,.dark .table-wrapper,.dark fieldset{
+  border:solid 1px #f7f8f9;
   background:#020617!important;
   box-shadow:0 20px 40px rgba(0,0,0,.6)
 }
 .dark fieldset{
-  border-color:#1e293b
+  border-color:#2c4b7b
 }
 .dark legend{
   background:#020617;
