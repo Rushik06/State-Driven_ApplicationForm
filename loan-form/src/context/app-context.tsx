@@ -3,7 +3,7 @@ import type { ReactNode, Dispatch } from 'react';
 import type { AppState } from '../types/app-state.type';
 import { initialAppState } from '../app.state';
 import type { LoanApplication } from '../types/loan-application.type';
-import { saveSubmissions } from '../app.storage';
+import { loadSubmissions, saveSubmissions } from '../app.storage';
 import { useEffect } from 'react';
 
 //  Actions 
@@ -83,7 +83,9 @@ const AppContext = createContext<{
 
 // Provider 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, initialAppState);
+  const [state, dispatch] = useReducer(reducer, initialAppState,
+    (init)=>
+      ({...init ,submissions:loadSubmissions()}));
   useEffect(() => {
     saveSubmissions(state.submissions);
   }, [state.submissions]);
