@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Gender } from '../../types/gender.type';
-import { calculateAge } from '../../App-logic/age';
-import { validateField } from '../../App-logic/field';
+import { calculateAge } from '../../app-logic/age';
+import { validateField } from '../../app-logic/field';
 import { useApp } from '../../context/app-context';
 import type { FormErrors } from '../../types/form-errors.type';
 
@@ -10,9 +10,11 @@ type Props = {
 };
 
 export function PersonalForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
+  // zustand logic
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
 
+  // local typing-time errors (unchanged)
   const [errors, setErrors] = useState({
     fullName: '',
     dob: '',
@@ -21,7 +23,8 @@ export function PersonalForm({ submitErrors }: Props) {
     mobile: ''
   });
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setErrors(prev => ({
       ...prev,
@@ -33,8 +36,10 @@ export function PersonalForm({ submitErrors }: Props) {
     }));
   }, [submitErrors]);
 
+  //  Handlers (logic preserved) 
+
   function onFullNameChange(value: string) {
-    dispatch({ type: 'UPDATE_FORM', payload: { fullName: value } });
+    updateForm({ fullName: value });
     setErrors(e => ({
       ...e,
       fullName: validateField('fullName', value, { ...form, fullName: value })
@@ -43,7 +48,7 @@ export function PersonalForm({ submitErrors }: Props) {
 
   function onDobChange(value: string) {
     const age = calculateAge(value);
-    dispatch({ type: 'UPDATE_FORM', payload: { dob: value, age } });
+    updateForm({ dob: value, age });
     setErrors(e => ({
       ...e,
       dob: validateField('dob', value, { ...form, dob: value, age })
@@ -51,7 +56,7 @@ export function PersonalForm({ submitErrors }: Props) {
   }
 
   function onGenderChange(gender: Gender) {
-    dispatch({ type: 'UPDATE_FORM', payload: { gender } });
+    updateForm({ gender });
     setErrors(e => ({
       ...e,
       gender: validateField('gender', gender, { ...form, gender })
@@ -59,7 +64,7 @@ export function PersonalForm({ submitErrors }: Props) {
   }
 
   function onEmailChange(value: string) {
-    dispatch({ type: 'UPDATE_FORM', payload: { email: value } });
+    updateForm({ email: value });
     setErrors(e => ({
       ...e,
       email: validateField('email', value, { ...form, email: value })
@@ -68,7 +73,7 @@ export function PersonalForm({ submitErrors }: Props) {
 
   function onMobileChange(value: string) {
     const exact = value.replace(/\D/g, '').slice(0, 10);
-    dispatch({ type: 'UPDATE_FORM', payload: { mobile: exact } });
+    updateForm({ mobile: exact });
     setErrors(e => ({
       ...e,
       mobile: validateField('mobile', exact, { ...form, mobile: exact })
@@ -77,9 +82,9 @@ export function PersonalForm({ submitErrors }: Props) {
 
   const genders: readonly Gender[] = ['MALE', 'FEMALE', 'OTHER'];
 
-  //UI
+  // -------- UI (unchanged) --------
 
- return (
+  return (
     <fieldset>
       <legend>Personal Details</legend>
 
@@ -103,11 +108,7 @@ export function PersonalForm({ submitErrors }: Props) {
 
       {/* Age */}
       <label>Age *</label>
-      <input
-        type="number"
-        value={form.age ?? ''}
-        readOnly
-      />
+      <input type="number" value={form.age ?? ''} readOnly />
 
       {/* Gender */}
       <label>Gender *</label>
@@ -139,7 +140,7 @@ export function PersonalForm({ submitErrors }: Props) {
       <label>Mobile Number *</label>
       <input
         type="tel"
-        placeholder='(6-9)xxxx'
+        placeholder="(6-9)xxxx"
         value={form.mobile}
         onChange={e => onMobileChange(e.target.value)}
       />

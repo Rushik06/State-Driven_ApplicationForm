@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { EmploymentType } from '../../types/employment.type';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 import type { FormErrors } from '../../types/form-errors.type';
@@ -11,8 +11,9 @@ type Props = {
 };
 
 export function EmploymentForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
+   //Zustand
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
 
   //  typing-time errors
   const [errors, setErrors] = useState({
@@ -44,9 +45,8 @@ export function EmploymentForm({ submitErrors }: Props) {
   function onEmploymentTypeChange(value: string) {
     const v = value ? (value as EmploymentType) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { employmentType: v }
+    updateForm({
+       employmentType: v 
     });
 
     setErrors(e => ({
@@ -61,9 +61,8 @@ export function EmploymentForm({ submitErrors }: Props) {
   function onCompanyChange(value: string) {
     const trimmed = value.trim();
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { companyName: trimmed }
+    updateForm({
+       companyName: trimmed 
     });
 
     setErrors(e => ({
@@ -78,9 +77,8 @@ export function EmploymentForm({ submitErrors }: Props) {
   function onIncomeChange(value: string) {
     const num = value ? Number(value) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { monthlyIncome: num }
+    updateForm({
+      monthlyIncome: num 
     });
 
     setErrors(e => ({
@@ -95,9 +93,8 @@ export function EmploymentForm({ submitErrors }: Props) {
   function onYearsChange(index: number) {
     const years = index > 0 ? index : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { yearsInJob: years }
+    updateForm({
+       yearsInJob: years 
     });
 
     setErrors(e => ({
@@ -112,9 +109,8 @@ export function EmploymentForm({ submitErrors }: Props) {
   function onLiabilitiesChange(value: string) {
     const num = value ? Number(value) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { liabilities: num }
+    updateForm({
+     liabilities: num 
     });
     setErrors(e => ({
       ...e,

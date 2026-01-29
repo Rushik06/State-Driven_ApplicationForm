@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { ErrorMessage } from '../helpers/create-error';
 import type { FormErrors } from '../../types/form-errors.type';
 
@@ -9,9 +9,11 @@ type Props = {
 };
 
 export function DeclarationForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
+  //Zustand
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
 
+  //typing-time errors
   const [errors, setErrors] = useState({
     infoAccurate: '',
     termsAccepted: ''
@@ -29,9 +31,8 @@ export function DeclarationForm({ submitErrors }: Props) {
   // Handlers
 
   function onInfoAccurateChange(checked: boolean) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { infoAccurate: checked }
+    updateForm({
+      infoAccurate: checked 
     });
 
     setErrors(e => ({
@@ -45,9 +46,8 @@ export function DeclarationForm({ submitErrors }: Props) {
   }
 
   function onTermsAcceptedChange(checked: boolean) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { termsAccepted: checked }
+    updateForm({
+       termsAccepted: checked 
     });
 
     setErrors(e => ({

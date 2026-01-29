@@ -1,35 +1,39 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from 'react';
+import { create } from 'zustand';
 import type { ReactNode } from 'react';
-
-interface ToastContextValue {
+interface ToastStore {
+  message: string | null;
   showToast: (message: string) => void;
+  clearToast: () => void;
 }
+const useToastStore = create<ToastStore>((set) => ({
+  message: null,
 
-const ToastContext = createContext<ToastContextValue | null>(null);
+  showToast: (message: string) => {
+    set({ message });
+    setTimeout(() => {
+      set({ message: null });
+    }, 3000);
+  },
+
+  clearToast: () => set({ message: null })
+}));
 
 export function ToastProvider({ children }: { children: ReactNode }) {
-  const [message, setMessage] = useState<string | null>(null);
-
-  function showToast(msg: string) {
-    setMessage(msg);
-    setTimeout(() => setMessage(null), 3000);
-  }
+  const message = useToastStore(state => state.message);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <>
       {children}
       {message && <Toast message={message} />}
-    </ToastContext.Provider>
+    </>
   );
 }
 
-export function useToast(): ToastContextValue {
-  const ctxt = useContext(ToastContext);
-  if (!ctxt) {
-    throw new Error('useToast must be used inside ToastProvider');
-  }
-  return ctxt;
+export function useToast() {
+  const showToast = useToastStore(state => state.showToast);
+
+  return { showToast };
 }
 
 function Toast({ message }: { message: string }) {

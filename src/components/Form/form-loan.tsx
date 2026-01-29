@@ -3,7 +3,7 @@ import type { CreditScore } from '../../types/credit-score.type';
 import type { LoanPurpose } from '../../types/loan-purpose.type';
 import type { FormErrors } from '../../types/form-errors.type';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 
@@ -12,9 +12,9 @@ type Props = {
 };
 
 export function LoanForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
-
+  //Zustand
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
   //typing-time errors
   const [errors, setErrors] = useState({
     loanAmount: '',
@@ -41,9 +41,8 @@ export function LoanForm({ submitErrors }: Props) {
   function onLoanAmountChange(value: string) {
     const num = value ? Number(value) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { loanAmount: num }
+    updateForm({
+      loanAmount: num
     });
 
     setErrors(e => ({
@@ -58,9 +57,8 @@ export function LoanForm({ submitErrors }: Props) {
   function onLoanPurposeChange(value: string) {
     const v = value ? (value as LoanPurpose) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { loanPurpose: v }
+    updateForm({
+      loanPurpose: v
     });
 
     setErrors(e => ({
@@ -75,10 +73,7 @@ export function LoanForm({ submitErrors }: Props) {
   function onTenureChange(value: string) {
     const num = value ? Number(value) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { loanTenure: num }
-    });
+    updateForm({ loanTenure: num });
 
     setErrors(e => ({
       ...e,
@@ -90,16 +85,14 @@ export function LoanForm({ submitErrors }: Props) {
   }
 
   function onExistingLoansChange(checked: boolean) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { existingLoans: checked }
+    updateForm({
+      existingLoans: checked 
     });
   }
 
   function onCreditScoreChange(score: CreditScore) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { creditScore: score }
+    updateForm({
+   creditScore: score 
     });
   }
 

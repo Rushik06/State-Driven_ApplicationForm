@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 import type { FormErrors } from '../../types/form-errors.type';
@@ -10,8 +10,9 @@ type Props = {
 };
 
 export function IdentityForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
+  //Zustand
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
 
   // typing-time errors
   const [errors, setErrors] = useState({
@@ -33,9 +34,8 @@ export function IdentityForm({ submitErrors }: Props) {
   function onPanChange(value: string) {
     const cleaned = value.toUpperCase().slice(0, 10);
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { pan: cleaned }
+    updateForm({
+       pan: cleaned 
     });
 
     setErrors(e => ({
@@ -47,9 +47,8 @@ export function IdentityForm({ submitErrors }: Props) {
   function onAadhaarChange(value: string) {
     const cleaned = value.replace(/\D/g, '').slice(0, 12);
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { aadhaar: cleaned }
+    updateForm({
+       aadhaar: cleaned 
     });
 
     setErrors(e => ({

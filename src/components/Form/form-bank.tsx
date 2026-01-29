@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react';
 import type { BankAccountType } from '../../types/bank-account.type';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 import type { FormErrors } from '../../types/form-errors.type';
@@ -11,8 +11,9 @@ type Props = {
 };
 
 export function BankForm({ submitErrors }: Props) {
-  const { state, dispatch } = useApp();
-  const form = state.form;
+   //Zustand
+  const form = useApp(state => state.form);
+  const updateForm = useApp(state => state.updateForm);
 
   //const salarySlipRef =useRef<HTMLInputElement|null>(null);
   //const bankStatementRef = useRef<HTMLInputElement|null>(null);
@@ -41,9 +42,8 @@ export function BankForm({ submitErrors }: Props) {
   function onBankTypeChange(value: string) {
     const v = value ? (value as BankAccountType) : null;
 
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { bankAccountType: v }
+    updateForm({
+      bankAccountType: v 
     });
 
     setErrors(e => ({
@@ -57,7 +57,9 @@ export function BankForm({ submitErrors }: Props) {
   }
 
   function onSalarySlipChange(file: File | null) {
-    dispatch({ type: 'UPDATE_FORM', payload: { salarySlip: file } });
+    updateForm({ 
+       salarySlip: file 
+      });
 
     setErrors(e => ({
       ...e,
@@ -70,7 +72,9 @@ export function BankForm({ submitErrors }: Props) {
   }
 
   function onBankStatementChange(file: File | null) {
-    dispatch({ type: 'UPDATE_FORM', payload: { bankStatement: file } });
+    updateForm({
+       bankStatement: file  
+    });
 
     setErrors(e => ({
       ...e,

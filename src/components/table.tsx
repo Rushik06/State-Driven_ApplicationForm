@@ -30,29 +30,23 @@ const HEADERS: readonly string[] = [
 ];
 
 export function Table() {
-  const { state, dispatch } = useApp();
+  // Zustand selectors (NO dispatch)
+  const submissions = useApp(state => state.submissions);
+  const loadFormForEdit = useApp(state => state.loadFormForEdit);
+  const deleteSubmission = useApp(state => state.deleteSubmission);
+
   const { showToast } = useToast();
 
-  const submissions = state.submissions;
-
-  function handleEdit(app: LoanApplication) {
-    dispatch({
-      type: 'LOAD_FORM_FOR_EDIT',
-      payload: app
-    });
-
+  function handleEdit(app: LoanApplication): void {
+    loadFormForEdit(app);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function handleDelete(id: string) {
+  function handleDelete(id: string): void {
     const confirmed = window.confirm('DELETE THE ROW');
     if (!confirmed) return;
 
-    dispatch({
-      type: 'DELETE_SUBMISSION',
-      payload: id
-    });
-
+    deleteSubmission(id);
     showToast('Deleted row successfully');
   }
 
@@ -92,8 +86,7 @@ export function Table() {
   );
 }
 
-//  Row Component 
-
+// Row Component
 interface RowProps {
   app: LoanApplication;
   onEdit: (app: LoanApplication) => void;
@@ -106,22 +99,22 @@ function TableRow({ app, onEdit, onDelete }: RowProps) {
       <td>{app.fullName}</td>
       <td>{app.dob}</td>
       <td>{app.age}</td>
-      <td>{app.gender}</td>
+      <td>{app.gender ?? '-'}</td>
       <td>{app.email}</td>
       <td>{app.mobile}</td>
       <td>{app.pan}</td>
       <td>{app.aadhaar}</td>
-      <td>{app.employmentType}</td>
+      <td>{app.employmentType ?? '-'}</td>
       <td>{app.companyName}</td>
-      <td>{app.monthlyIncome}</td>
-      <td>{app.yearsInJob}</td>
+      <td>{app.monthlyIncome ?? '-'}</td>
+      <td>{app.yearsInJob ?? '-'}</td>
       <td>{app.liabilities ?? '-'}</td>
-      <td>{app.loanAmount}</td>
-      <td>{app.loanPurpose}</td>
-      <td>{app.loanTenure}</td>
+      <td>{app.loanAmount ?? '-'}</td>
+      <td>{app.loanPurpose ?? '-'}</td>
+      <td>{app.loanTenure ?? '-'}</td>
       <td>{app.existingLoans ? 'Yes' : 'No'}</td>
       <td>{app.creditScore ?? '-'}</td>
-      <td>{app.bankAccountType}</td>
+      <td>{app.bankAccountType ?? '-'}</td>
       <td>{app.salarySlip ? app.salarySlip.name : '-'}</td>
       <td>{app.bankStatement ? app.bankStatement.name : '-'}</td>
       <td>{app.infoAccurate ? 'Yes' : 'No'}</td>
