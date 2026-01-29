@@ -19,8 +19,8 @@ export function IdentityForm({ submitErrors }: Props) {
     aadhaar: ''
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       pan: submitErrors.pan ?? prev.pan,

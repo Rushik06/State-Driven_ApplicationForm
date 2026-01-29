@@ -17,8 +17,8 @@ export function DeclarationForm({ submitErrors }: Props) {
     termsAccepted: ''
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       infoAccurate: submitErrors.infoAccurate ?? prev.infoAccurate,
