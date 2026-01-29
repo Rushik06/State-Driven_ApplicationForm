@@ -92,7 +92,7 @@ export function Table() {
   );
 }
 
-// ---------------- Row Component ----------------
+//  Row Component 
 
 interface RowProps {
   app: LoanApplication;
