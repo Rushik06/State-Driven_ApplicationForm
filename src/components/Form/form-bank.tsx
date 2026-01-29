@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef} from 'react';
 import type { BankAccountType } from '../../types/bank-account.type';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
@@ -13,6 +13,9 @@ type Props = {
 export function BankForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
+
+  const salarySlipRef =useRef<HTMLInputElement|null>(null);
+  const bankStatementRef = useRef<HTMLInputElement|null>(null);
 
   //typing-time errors
   const [errors, setErrors] = useState({
@@ -55,10 +58,7 @@ export function BankForm({ submitErrors }: Props) {
   }
 
   function onSalarySlipChange(file: File | null) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { salarySlip: file }
-    });
+    dispatch({ type: 'UPDATE_FORM', payload: { salarySlip: file } });
 
     setErrors(e => ({
       ...e,
@@ -71,10 +71,7 @@ export function BankForm({ submitErrors }: Props) {
   }
 
   function onBankStatementChange(file: File | null) {
-    dispatch({
-      type: 'UPDATE_FORM',
-      payload: { bankStatement: file }
-    });
+    dispatch({ type: 'UPDATE_FORM', payload: { bankStatement: file } });
 
     setErrors(e => ({
       ...e,
@@ -84,6 +81,15 @@ export function BankForm({ submitErrors }: Props) {
         { ...form, bankStatement: file }
       )
     }));
+  }
+
+  
+  if (!form.salarySlip && salarySlipRef.current) {
+    salarySlipRef.current.value = '';
+  }
+
+  if (!form.bankStatement && bankStatementRef.current) {
+    bankStatementRef.current.value = '';
   }
 
   //  UI 
@@ -106,8 +112,10 @@ export function BankForm({ submitErrors }: Props) {
       <ErrorMessage message={errors.bankAccountType} />
 
       {/* Salary Slip */}
+
       <label>Upload Salary Slip *</label>
       <input
+        ref={salarySlipRef}
         type="file"
         accept=".pdf,.jpg,.png"
         onChange={e =>
@@ -116,9 +124,9 @@ export function BankForm({ submitErrors }: Props) {
       />
       <ErrorMessage message={errors.salarySlip} />
 
-      {/* Bank Statement */}
       <label>Upload Bank Statement *</label>
       <input
+        ref={bankStatementRef}
         type="file"
         accept=".pdf,.jpg,.png"
         onChange={e =>
@@ -129,3 +137,4 @@ export function BankForm({ submitErrors }: Props) {
     </FormSection>
   );
 }
+
