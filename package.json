@@ -9,9 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"**/*.{ts,js,json,css,md,tsx,jsx}\"",
-    "prepare": "husky"
+    "prepare": "husky && husky install"
   },
   "dependencies": {
+    "commitlint": "^20.3.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -48,6 +49,8 @@
     ],
     "**/*.md": [
       "prettier --write"
-    ]
+    ],
+    "*.js": "eslint --cache --fix",
+    "*.{ts,js,json,css,md,tsx,jsx}": "prettier --write"
   }
 }
