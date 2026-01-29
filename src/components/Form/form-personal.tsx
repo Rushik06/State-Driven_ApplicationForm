@@ -22,6 +22,7 @@ export function PersonalForm({ submitErrors }: Props) {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       fullName: submitErrors.fullName ?? prev.fullName,

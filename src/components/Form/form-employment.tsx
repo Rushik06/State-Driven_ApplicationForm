@@ -24,6 +24,7 @@ export function EmploymentForm({ submitErrors }: Props) {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       employmentType: submitErrors.employmentType ?? prev.employmentType,

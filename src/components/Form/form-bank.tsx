@@ -25,6 +25,7 @@ export function BankForm({ submitErrors }: Props) {
 
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       bankAccountType: submitErrors.bankAccountType ?? prev.bankAccountType,

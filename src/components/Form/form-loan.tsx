@@ -24,6 +24,7 @@ export function LoanForm({ submitErrors }: Props) {
 
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setErrors(prev => ({
       ...prev,
       loanAmount: submitErrors.loanAmount ?? prev.loanAmount,

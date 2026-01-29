@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useReducer } from 'react';
 import type { ReactNode, Dispatch } from 'react';
 import type { AppState } from '../types/app-state.type';
@@ -17,7 +18,7 @@ type Action =
 
 // Reducer 
 function reducer(state: AppState, action: Action): AppState {
-  let nextState:AppState=state;
+  const nextState:AppState=state;
   switch (action.type) {
     case 'UPDATE_FORM':
       return {
