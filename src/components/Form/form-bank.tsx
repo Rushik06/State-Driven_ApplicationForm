@@ -1,4 +1,4 @@
-import { useState, useEffect ,useRef} from 'react';
+import { useState, useEffect} from 'react';
 import type { BankAccountType } from '../../types/bank-account.type';
 import { useApp } from '../../context/app-context';
 import { validateField } from '../../App-logic/field';
@@ -14,8 +14,8 @@ export function BankForm({ submitErrors }: Props) {
   const { state, dispatch } = useApp();
   const form = state.form;
 
-  const salarySlipRef =useRef<HTMLInputElement|null>(null);
-  const bankStatementRef = useRef<HTMLInputElement|null>(null);
+  //const salarySlipRef =useRef<HTMLInputElement|null>(null);
+  //const bankStatementRef = useRef<HTMLInputElement|null>(null);
 
   //typing-time errors
   const [errors, setErrors] = useState({
@@ -83,13 +83,13 @@ export function BankForm({ submitErrors }: Props) {
   }
 
   
-  if (!form.salarySlip && salarySlipRef.current) {
+  /*if (!form.salarySlip && salarySlipRef.current) {
     salarySlipRef.current.value = '';
   }
 
   if (!form.bankStatement && bankStatementRef.current) {
     bankStatementRef.current.value = '';
-  }
+  }*/
 
   //  UI 
 
@@ -114,7 +114,7 @@ export function BankForm({ submitErrors }: Props) {
 
       <label>Upload Salary Slip *</label>
       <input
-        ref={salarySlipRef}
+        //ref={salarySlipRef}
         type="file"
         accept=".pdf,.jpg,.png"
         onChange={e =>
@@ -125,7 +125,7 @@ export function BankForm({ submitErrors }: Props) {
 
       <label>Upload Bank Statement *</label>
       <input
-        ref={bankStatementRef}
+       // ref={bankStatementRef}
         type="file"
         accept=".pdf,.jpg,.png"
         onChange={e =>
