@@ -2,6 +2,7 @@ import type { LoanApplication } from '../types/loan-application.type';
 import { useApp } from '../context/app-context';
 import { useToast } from '../context/toast-context';
 
+
 const HEADERS: readonly string[] = [
   'Full Name',
   'DOB',
