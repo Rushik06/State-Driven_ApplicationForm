@@ -163,7 +163,8 @@ button:hover {
 
 
 label {
-  display: block;
+  display: flex;
+  flex-direction: row;
   margin-top: 16px;
   margin-bottom: 6px;
   font-weight: 500;

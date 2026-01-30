@@ -32,7 +32,7 @@ export function SelectField<T extends string>({
       margin="normal"
       variant="outlined"
     >
-      {/* 🔑 IMPORTANT: labelId */}
+      {/* labelId */}
       <InputLabel id={`${label}-label`}>
         {label}
       </InputLabel>
