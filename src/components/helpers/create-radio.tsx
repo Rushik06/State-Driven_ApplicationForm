@@ -1,44 +1,21 @@
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio
-} from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
-interface RadioFieldProps<T extends string> {
-  label: string;
-  name: string;        
-  options: readonly T[];
-  value: T | null;
-  onChange: (value: T) => void;
-}
-
-export function RadioField<T extends string>({
-  label,
-  name,
-  options,
-  value,
-  onChange
-}: RadioFieldProps<T>) {
+export default function RadioButtonsGroup() {
   return (
-    <FormControl margin="normal">
-      <FormLabel>{label}</FormLabel>
-
+    <FormControl>
+      <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
       <RadioGroup
-        row
-        name={name}               
-        value={value ?? ''}
-        onChange={(e) => onChange(e.target.value as T)}
+        aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue="female"
+        name="radio-buttons-group"
       >
-        {options.map(opt => (
-          <FormControlLabel
-            key={opt}
-            value={opt}
-            control={<Radio />}
-            label={opt}
-          />
-        ))}
+        <FormControlLabel value="female" control={<Radio />} label="Female" />
+        <FormControlLabel value="male" control={<Radio />} label="Male" />
+        <FormControlLabel value="other" control={<Radio />} label="Other" />
       </RadioGroup>
     </FormControl>
   );
