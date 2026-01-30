@@ -1,4 +1,4 @@
-import { Form } from './components/Form/form';
+import { Form } from './components/form/form';
 import { Table } from './components/table';
 import { ThemeToggle } from './components/theme-toggle';
 import { AppProvider } from './context/app-context';
