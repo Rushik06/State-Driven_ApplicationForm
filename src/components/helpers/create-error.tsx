@@ -1,4 +1,4 @@
-interface ErrorMessageProps {
+/*interface ErrorMessageProps {
   message?: string;
 }
 
@@ -11,9 +11,8 @@ export function ErrorMessage({ message }: ErrorMessageProps) {
     </span>
   );
 }
-
-/*import { Typography } from '@mui/material';
-
+*/
+import { Typography } from '@mui/material';
 interface ErrorMessageProps {
   message?: string;
 }
@@ -30,4 +29,4 @@ export function ErrorMessage({ message }: ErrorMessageProps) {
       {message}
     </Typography>
   );
-}*/
+}

@@ -18,6 +18,7 @@ export function CheckboxField({
     <FormControlLabel
       control={
         <Checkbox
+          typeof='checkbox'
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
         />
