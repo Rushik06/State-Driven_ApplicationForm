@@ -4,6 +4,7 @@ import { calculateAge } from '../../app-logic/age';
 import { validateField } from '../../app-logic/field';
 import { useApp } from '../../context/app-context';
 import type { FormErrors } from '../../types/form-errors.type';
+import { FormSection } from '../helpers/create-feildset';
 
 type Props = {
   submitErrors: FormErrors;
@@ -14,7 +15,7 @@ export function PersonalForm({ submitErrors }: Props) {
   const form = useApp(state => state.form);
   const updateForm = useApp(state => state.updateForm);
 
-  // local typing-time errors (unchanged)
+  // typing-time errors 
   const [errors, setErrors] = useState({
     fullName: '',
     dob: '',
@@ -36,7 +37,7 @@ export function PersonalForm({ submitErrors }: Props) {
     }));
   }, [submitErrors]);
 
-  //  Handlers (logic preserved) 
+  //  Handlers 
 
   function onFullNameChange(value: string) {
     updateForm({ fullName: value });
@@ -82,11 +83,10 @@ export function PersonalForm({ submitErrors }: Props) {
 
   const genders: readonly Gender[] = ['MALE', 'FEMALE', 'OTHER'];
 
-  // -------- UI (unchanged) --------
+  // UI 
 
   return (
-    <fieldset>
-      <legend>Personal Details</legend>
+    <FormSection title ="Personal Details">
 
       {/* Full Name */}
       <label>Full Name *</label>
@@ -145,6 +145,6 @@ export function PersonalForm({ submitErrors }: Props) {
         onChange={e => onMobileChange(e.target.value)}
       />
       <span className="error-message">{errors.mobile}</span>
-    </fieldset>
+    </FormSection>
   );
 }

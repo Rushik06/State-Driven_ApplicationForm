@@ -1,15 +1,40 @@
+import { TextField } from '@mui/material';
+
 interface InputFieldProps {
-  type: React.HTMLInputTypeAttribute;
-  value: string;
-  onChange: (value: string) => void;
+  type?: React.HTMLInputTypeAttribute;
+  value: string | number;
+  onChange?: (value: string) => void;
+  label?: string;
+  placeholder?: string;
+  readOnly?: boolean;
 }
 
-export function InputField({ type, value, onChange }: InputFieldProps) {
+export function InputField({
+  type = 'text',
+  value,
+  onChange,
+  label,
+  placeholder,
+  readOnly = false
+}: InputFieldProps) {
   return (
-    <input
+    <TextField
+      fullWidth
+      size="small"
+      margin="normal"
       type={type}
+      label={label}
+      placeholder={placeholder}
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={
+        onChange
+          ? (e) => onChange(e.target.value)
+          : undefined
+      }
+      InputProps={{
+        readOnly
+      }}
+      variant="outlined"
     />
   );
 }

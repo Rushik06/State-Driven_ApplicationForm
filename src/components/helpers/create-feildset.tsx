@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Paper, Typography, Box } from '@mui/material';
 
 interface FormSectionProps {
   title: string;
@@ -7,9 +8,26 @@ interface FormSectionProps {
 
 export function FormSection({ title, children }: FormSectionProps) {
   return (
-    <fieldset>
-      <legend>{title}</legend>
-      {children}
-    </fieldset>
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        mb: 3,
+        borderRadius: 2,
+        bgcolor: 'background.paper'
+      }}
+    >
+      <Typography
+        variant="h6"
+        component="h2"
+        sx={{ mb: 2, fontWeight: 600 }}
+      >
+        {title}
+      </Typography>
+
+      <Box>
+        {children}
+      </Box>
+    </Paper>
   );
 }
