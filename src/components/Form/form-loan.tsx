@@ -3,7 +3,7 @@ import type { CreditScore } from '../../types/credit-score.type';
 import type { LoanPurpose } from '../../types/loan-purpose.type';
 import type { FormErrors } from '../../types/form-errors.type';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 

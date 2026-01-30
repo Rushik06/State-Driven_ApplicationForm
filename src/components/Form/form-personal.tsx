@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Gender } from '../../types/gender.type';
-import { calculateAge } from '../../App-logic/age';
-import { validateField } from '../../App-logic/field';
+import { calculateAge } from '../../app-logic/age';
+import { validateField } from '../../app-logic/field';
 import { useApp } from '../../context/app-context';
 import type { FormErrors } from '../../types/form-errors.type';
 

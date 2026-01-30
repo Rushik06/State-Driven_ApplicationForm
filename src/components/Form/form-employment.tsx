@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { EmploymentType } from '../../types/employment.type';
 import { useApp } from '../../context/app-context';
-import { validateField } from '../../App-logic/field';
+import { validateField } from '../../app-logic/field';
 import { FormSection } from '../helpers/create-feildset';
 import { ErrorMessage } from '../helpers/create-error';
 import type { FormErrors } from '../../types/form-errors.type';
